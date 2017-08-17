@@ -2,7 +2,7 @@
 
 $hostname = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 
 $db_name = "tka_bd";
 
