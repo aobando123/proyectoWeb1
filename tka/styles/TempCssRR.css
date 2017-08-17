@@ -1,0 +1,75 @@
+/*Inicio: CSS - Roberto Rojas*/
+
+/*Inicio: CSS - RR Registrar*/
+#sectionFoto {
+  float: left;
+  padding: 
+}
+
+#floatDerecha {
+  float: right;
+}
+
+.clearFloat {
+	clear: both;
+}
+
+.imgContainer span img {
+	width: 75px;
+	padding: 110px 150px;
+
+}
+
+/*Fin: CSS - RR Registrar*/
+
+/*Inicio:  CSS - RR Modificar*/
+
+#btnModificar{
+	background: #c11414;
+	color: #fff;
+
+}
+
+/*Fin: CSS - RR Registrar*/
+
+/*Inicio: CSS - RR Agregar*/
+
+.estiloAgregar ul{margin-left: 0; float: left; list-style-type: none; padding-left: 0;}
+
+/*Inicio: Estilo para cada item de la lista*/
+.estiloAgregar ul li {
+	padding: 20px 40px; 
+	background: #D8D9DD; 
+	border-top: 2px solid #797979;  
+}
+/*Fin: Estilo para cada item de la lista*/
+
+/*Inicio: Estilo para el borde de abajo del último item*/
+.estiloAgregar ul:last-child {
+	border-bottom: 2px solid #797979;  
+}
+/*Fin: Estilo para el borde de abajo del último item*/
+
+.estiloAgregar ul li:hover{
+	background: #C11414;
+	color: #F7F7F8;
+}
+
+/*Inicio: Estilo de item seleccionado*/
+#activo {
+	background: #C11414;
+	color: #F7F7F8;
+}
+/*Fin: Estilo de item seleccionado*/
+
+/*Inicio: Estilo de Seccion para que los elementos estén en línea*/
+
+.enLinea {
+	display: inline-block;
+}
+
+/*Fin: Estilo de Seccion para que los elementos estén en línea*/
+
+/*Fin: CSS - RR Agregar*/
+
+/*Fin: CSS - Roberto Rojas*/

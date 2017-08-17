@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+  <div class="alert fade-out display-none">
+   <i class="fa fa-times" aria-hidden="true"></i>
+   <div class="clear"></div>
+    <h3></h3>
+    <p></p>
+
+  </div>
+  <form class="login-form">
+     <h1>Recuperar contraseña</h1>
+     <span id="errorEmail" class="span-error"></span>
+     <div class="form-group ">
+       <input type="email" class="form-control" placeholder="Correo Electrónico " id="email">
+       <i class="fa fa-user"></i>
+     </div>
+
+      <a class="linklogin" href="login.html">Iniciar sesi&oacute;n</a>
+     <button type="button" id="btnRecuperarClave" class="log-btn" >Recuperar contraseña</button>
+
+   </form>
+
+<script src="scripts/alert.js" charset="utf-8"></script>
+<script src="scripts/login/logicaNegocioIniciarSesion.js" charset="utf-8"></script>
+<script src="scripts/login/logicaInterfazRecuperarClave.js" charset="utf-8"></script>
+<script src="scripts/login/logicaNegocioRecuperarClave.js" charset="utf-8"></script>
+</body>
+</html>

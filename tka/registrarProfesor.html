@@ -1,0 +1,114 @@
+<DOCTYPE HTML>
+<html>
+	<head>
+		<title>Profesor</title>
+		<meta charset="utf-8">
+		<link href="styles/layout.css" rel="stylesheet" type="text/css" media="all">
+		<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+		<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+	
+	<body>
+		<div class="wrapper row0">
+		  <div id="topbarsesion" class="clear"> 
+			<div class="fl_right">
+			  <ul class="nospace" style="padding:10px 0px;">
+				<li><a href="index.html"><span class="icon-sign-out"></span>  Cerrar Sesión</a></li>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+
+		<div class="wrapper row1">
+		  <header id="headersesion" class="clear"> 
+			<div id="logo" class="fl_left">
+			  <h1><a href="index.html"><img src="images/logo.png"></a></h1>
+			</div>
+			<nav id="mainav" class="fl_right">
+			  <ul class="clear">
+				<li class="active"><a href="#">Profesores</a></li>
+				<li><a href="index.html">Estudiantes</a></li>
+				<li><a href="#">Lugares</a></li>
+				<li><a href="#">Academias</a></li>
+				<li><a href="#">Organizaciones</a></li>
+				<li><a href="#">Eventos</a></li>
+				<li><a href="#">Patrocinadores</a></li>
+				<li><a class="drop" href="#">Ajustes</a>
+				  <ul>
+					<li><a href="#">Editar Perfil</a></li>
+					<li><a href="#">Reportes</a></li>
+					<li><a href="#">Administradores</a></li>
+					<li><a href="#">Asistentes</a></li>
+				  </ul>
+				</li>
+			  </ul>
+			</nav>
+		  </header>
+		</div>
+
+		<div class="wrapper">
+			<main id="container" class="clear"> 
+				<div id="formulario">
+					  <h2>Registrar profesor</h2>
+						<form action="#" method="post">
+							<div class="one_third">
+								<label for="nombreProf">Nombre <span>*</span></label>
+								<input type="text" name="Nombre" id="nombreProf" class="requerido" value="" >
+							</div>
+							<div class="one_third">
+								<label for="1Apellido">Primer apellido <span>*</span></label>
+								<input type="text" name="Primer apellido" id="1Apellido" class="requerido" value="" >
+							</div>
+							<div class="one_third">
+								<label for="2Apellido">Segundo apellido</label>
+								<input type="text" name="Segundo apellido" id="2Apellido" value="" >
+							</div>
+
+							<div class="one_third first">
+								<label for="numId">Número de Identificación <span>*</span></label>
+								<input type="number" name="Número de Identificación" id="numId" class="requerido" value="">
+							</div>
+
+							<div class="one_third">
+								<label for="fechaNacimiento">Fecha de nacimiento <span>*</span></label>
+								<input type="date" name="Fecha de nacimiento" id="fechaNacimiento" class="requerido" value="">
+							</div>
+
+
+							<div class="one_third">
+								<label for="genero">Género <span>*</span></label>
+								<input type="text" name="Género" id="genero" class="requerido" value="">
+							</div>
+							<div class="one_third first">
+								<label for="academia">Academia <span>*</span></label>
+								<input type="text" name="Género" id="genero" class="requerido" value="">
+							</div>
+							<div class="one_third">
+								<label for="telefono">Teléfono <span>*</span></label>
+								<input type="text" name="telefono" id="telefono" class="requerido" value="">
+							</div>
+							<span id="errorEmail" class="span-error"></span>
+							<div class="one_third">
+								<label for="correoElect">Correo electrónico <span>*</span></label>
+								<input type="email" name="Correo electrónico" id="correoElect" class="requerido" value="" >
+							</div>
+
+							<div class="first">
+								<input name="submit" type="submit" id="btnRegistrar" class="requerido" value="Registrar">
+							</div>
+						</form>
+					</div>
+				</main>
+			</div>
+
+		<footer class="wrapper row5">
+			<div id="copyright" class="clear"> 
+				<p class="fl_left">Copyright &copy; 2017 - Todos los derechos reservados</p>
+				<p class="fl_right">Diseñado por DynamicS</p>
+			</div>
+		</footer>
+		
+		<script src="scripts/profesor/logicaInterfazProfesor.js"></script> 
+		<script src="scripts/profesor/logicaNegocioProfesor.js"></script> 
+	</body>
+</html>

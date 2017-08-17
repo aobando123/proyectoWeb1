@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Modificar clave</title>
+<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+<!--ALERTA-->
+  <div class="alert fade-out display-none">
+   <i class="fa fa-times"></i>
+   <div class="clear"></div>
+    <h3></h3>
+    <p></p>
+  </div>
+  
+
+<div class="wrapper row0">
+  <div id="topbarsesion" class="clear">
+    <div class="fl_right">
+      <ul class="nospace">
+        <li id="nombreUsuario">Hola, </li>
+        <li id="cerrarSesion"><a><span class="fa fa-sign-out"></span>Cerrar Sesión</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+  <form class="login-form">
+     <h1>Modificar clave</h1>
+     <div class="form-group log-status">
+       <input type="password" class="form-control" placeholder="Clave genérica" id="generica">
+       <i class="fa fa-key"></i>
+     </div>
+     <span id="errorPassword" class="span-error"></span>
+     <div class="form-group log-status">
+       <input type="password" class="form-control" placeholder="Nueva clave" id="password">
+       <i class="fa fa-lock"></i>
+     </div>
+     <span id="errorPasswordRepetir" class="span-error"></span>
+     <div class="form-group log-status">
+       <input type="password" class="form-control" placeholder="Repetir nueva clave" id="password-repetida">
+       <i class="fa fa-lock"></i>
+     </div>
+     <button type="button" class="log-btn" id="btnModificarClave" >Cambiar clave</button>
+
+   </form>
+    <span id="clave"></span>
+    
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  
+   <script type="text/javascript" src="scripts/sesion/session.js"></script>
+   <script src="scripts/alert.js" charset="utf-8"></script>
+   
+   <script src="scripts/login/logicaNegocioIniciarSesion.js" charset="utf-8"></script>
+   <script src="scripts/login/logicaNegocioModificarClave.js" charset="utf-8"></script>
+   <script type="text/javascript" src="scripts/login/logicaInterfazModificarClave.js"></script>
+</body>
+</html>

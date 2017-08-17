@@ -1,0 +1,105 @@
+<DOCTYPE HTML>
+<html>
+	<head>
+		<title>Evento</title>
+		<meta charset="utf-8">
+		<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+		<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+	</head>
+
+	<body>
+		<div class="wrapper row0">
+		  <div id="topbarsesion" class="clear">
+			<div class="fl_right">
+			  <ul class="nospace" style="padding:10px 0px;">
+					<li id="nombreUsuario">Hola, </li>
+	        <li id="cerrarSesion"><a href="index.html"><span class="fa fa-sign-out"></span>  Cerrar Sesión</a></li>
+			  </ul>
+			</div>
+		  </div>
+		</div>
+
+		<div class="wrapper row1">
+		  <header id="headersesion" class="clear">
+			<div id="logo" class="fl_left">
+			  <h1><a href="index.html"><img src="images/logo.png"></a></h1>
+			</div>
+			<nav id="mainav" class="fl_right">
+
+			</nav>
+		  </header>
+		</div>
+
+		<!--ALERTA-->
+		<div class="alert fade-out display-none">
+			<i class="fa fa-times"></i>
+			<div class="clear"></div>
+			<h3></h3>
+			<p></p>
+		</div>
+
+		<div class="wrapper">
+			<main id="container" class="clear">
+			<a href="listarEventos.html">Regresar</a><br/><br/>
+				<div id="formulario">
+					  <h2>Registrar evento</h2>
+						<form action="#" method="post">
+							<div class="block clear">
+								<label for="nombreEvento">Nombre <span>*</span></label>
+								<input type="text" name="Nombre" id="nombreEvento" class="requerido" value="">
+							</div>
+							<div class="one_third first">
+								<label for="fechaInicialEvento">Fecha Inicial <span>*</span></label>
+								<input type="date" name="Fecha inicial" id="fechaInicialEvento" class="requerido" value="">
+							</div>
+							<div class="one_third">
+								<label for="fechaFinalEvento">Fecha Final <span>*</span></label>
+								<input type="date" name="Fecha final" id="fechaFinalEvento" class="requerido" value="">
+							</div>
+							<div class="one_third">
+								<label for="tipoEvento">Tipo de evento <span></span></label>
+								<select id="tipoEvento">
+									<option value="Exhibición">Exhibición</option>
+									<option value="Torneo">Torneo</option>
+									<option value="Fogueo">Fogueo</option>
+								</select>
+							</div>
+							<div class="one_third first">
+								<label for="costoInscripcion">Costo de Inscripción<span>*</span></label>
+								<input type="number" name="Costo de Inscripcion" id="costoInscripcion" class="requerido" value="">
+							</div>
+							<div class="one_third">
+								<label for="costoEntrada">Costo de Entrada<span>*</span></label>
+								<input type="number" name="Costo de Entrada" id="costoEntrada" class="requerido" value="">
+							</div>
+							<div class="one_third">
+								<label for="entradasDisponibles">Entradas disponibles<span>*</span></label>
+								<input type="number" name="Entradas disponibles" id="entradasDisponibles" class="requerido" value="">
+							</div>
+							<div class="block clear">
+								<label for="lugarEvento">Lugar <span>*</span></label>
+								<select id="lugarEvento" class="requerido">
+								</select>
+							</div>
+							<div>
+								<button type="button" name="button" id="btnRegistrar" class="btn btnRegistrar display-block">Registrar</button>
+							</div>
+						</form>
+					</div>
+				</main>
+			</div>
+
+		<footer class="wrapper row5">
+			<div id="copyright" class="clear">
+				<p class="fl_left">Copyright &copy; 2017 - Todos los derechos reservados</p>
+				<p class="fl_right">Diseñado por DynamicS</p>
+			</div>
+		</footer>
+		<script type="text/javascript" src="scripts/menu.js"></script>
+		<script type="text/javascript" src="scripts/sesion/session.js"></script>
+
+		<script type="text/javascript" src="scripts/alert.js"></script>
+		<script src="scripts/evento/logicaNegocioRegistrarEvento.js"></script>
+		<script src="scripts/evento/logicaInterfazRegistrarEvento.js"></script>
+	</body>
+</html>

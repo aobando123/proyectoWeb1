@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Profesores</title>
+<meta charset="utf-8">
+<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+<link rel="stylesheet" href="publicmodal/src/jquery.remodal.css">
+</head>
+<body>
+<div class="wrapper row0">
+  <div id="topbarsesion" class="clear">
+    <div class="fl_right">
+      <ul class="nospace">
+        <!---->
+        <li><a href="index.html"><span class=" fa fa-sign-out "></span>  Cerrar Sesión</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="wrapper row1">
+  <header id="headersesion" class="clear">
+    <div id="logo" class="fl_left">
+      <h1><a href="index.html"><img src="images/logo.png"></a></h1>
+    </div>
+    <nav id="mainav" class="fl_right">
+
+    </nav>
+  </header>
+</div>
+<!--ALERTA-->
+<div class="alert fade-out display-none">
+	<i class="fa fa-times"></i>
+	<div class="clear"></div>
+	<h3></h3>
+	<p></p>
+</div>
+<div class="wrapper">
+<main id="container" class="clear containerProfesor">
+  <div id="formulario">
+      <h2>Profesores</h2>
+      <button type="button" class="btn btnAgregar fa fa-plus" id="btnAgregar"></button>
+      <div class="clear"></div>
+      <table id="tblProfesores" class="table table-striped">
+      <thead>
+        <tr>
+          <th class="titulos">Nombre</th>
+          <th class="titulos">Primer apellido</th>
+          <th class="titulos">Número de identificación</th>
+          <th class="titulos">Correo electrónico</th>
+          <th class="titulos">Acciones</th>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <input id="buscar" size="100%" type="text" class="form-control buscador" placeholder="¿Qué buscas?" />
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    </div>
+    </main>
+    </div>
+<footer class="wrapper row5">
+<div id="copyright" class="clear">
+<p class="fl_left">Copyright &copy; 2017 - Todos los derechos reservados</p>
+<p class="fl_right">Diseñado por DynamicS</p>
+</div>
+</footer>
+
+<div class="remodal-bg">
+    <div class="remodal" data-remodal-id="modal">
+
+      <div class="wrapper">
+         <div id="formulario">
+             <h2 id="titulo">Registrar Profesor</h2>
+             <form>
+               <div class="one_third first">
+                 <label for="txtNombreProf">Nombre <span class="span-error">*</span></label>
+                <input type="text" name="Nombre" id="txtNombreProf" class="requerido" value="" >
+               </div>
+               <div class="one_third">
+                 <label for="txt1Apellido">Primer apellido <span class="span-error">*</span></label>
+                <input type="text" name="Primer apellido" id="txt1Apellido" class="requerido" value="" >
+               </div>
+               <div class="one_third">
+                <label for="txt2Apellido">Segundo apellido <span class="span-error"></span></label>
+                <input type="text" name="Segundo apellido" id="txt2Apellido" value="" >
+               </div>
+               <div class="one_half first">
+                 <label for="numId">Número de Identificación <span class="span-error span-error2">*</span></label>
+                <input type="number" name="Número de Identificación" id="numId" class="requerido" value="">
+               </div>
+               <div class="one_half">
+                 <label for="emCorreoElect">Correo electrónico<span class="span-error span-error3">*</span></label>
+                <input type="email" name="Correo electrónico" id="emCorreoElect" class="requerido" value="">
+               </div>
+               <div class="one_half first">
+                 <label for="txtTelefono">Teléfono <span class="span-error">*</span></label>
+                <input type="text" name="telefono" id="txtTelefono" class="requerido" value="">
+               </div>
+               <div class="one_half">
+                 <label for="txtGenero">Género<span class="span-error">*</span></label>
+                <select type="text" name="Género" id="txtGenero" class="requerido">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                </select>
+               </div>
+
+               <!--
+               <div class="one_half first">
+                 <label for="txtAcademia">Academia <span class="span-error">*</span></label>
+                <input type="text" name="Género" id="txtAcademia" class="requerido" value="">
+               </div>
+               -->
+
+               <div class="one_half first">
+                 <label for="txtAcademia">Academia<span class="span-error">*</span></label>
+                <select type="text" name="Academia" id="txtAcademia" class="requerido"></select>
+
+               </div>
+
+
+               <div class="one_half">
+                 <label for="datFechaNacimiento">Fecha de nacimiento <span class="span-error">*</span></label>
+                <input type="date" name="Fecha de nacimiento" id="datFechaNacimiento" class="requerido" value="">
+               </div>
+               <div>
+                 <button type="button" name="button" id="btnRegistrar" class="btn btnRegistrar display-block">Registrar</button>
+                 <button type="button" name="button" id="btnActualizar" class="btn btnRegistrar display-none">Actualizar</button>
+               </div>
+             </form>
+           </div>
+       </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="scripts/alert.js"></script>
+<script type="text/javascript" src="scripts/menu.js"></script>
+
+<script type="text/javascript" src="scripts/profesor/logicaNegocioProfesor.js"></script>
+<script type="text/javascript" src="scripts/profesor/logicaInterfazProfesor.js"></script>
+
+<script>window.jQuery || document.write('<script src="publicmodal/js/jquery-2.1.0.min.js"><\/script>')</script>
+<script src="publicmodal/src/jquery.remodal.js"></script>
+
+
+</body>
+</html>

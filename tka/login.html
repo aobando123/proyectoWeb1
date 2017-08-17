@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+</head>
+
+<body>
+<!--ALERTA-->
+  <div class="alert fade-out display-none">
+   <i class="fa fa-times"></i>
+   <div class="clear"></div>
+    <h3></h3>
+    <p></p>
+  </div>
+
+  <form class="login-form">
+     <h1>Iniciar sesión</h1>
+      <span id="errorEmail" class="span-error"></span>
+     <div class="form-group ">
+       <input type="text" class="form-control" placeholder="Correo " id="email">
+       <i class="fa fa-user"></i>
+     </div>
+      <span id="errorPassword" class="span-error"></span>
+     <div class="form-group log-status">
+       <input type="password" class="form-control" placeholder="Clave" id="password">
+       <i class="fa fa-lock"></i>
+     </div>
+      <a class="linklogin" href="recuperarclave.html">¿Olvidó su contraseña?</a>
+     <button type="button" class="log-btn" id="btnIniciarSesion" >Iniciar sesi&oacute;n</button>
+
+   </form>
+   <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  
+   <script src="scripts/alert.js" charset="utf-8"></script>
+   <script src="scripts/login/logicaNegocioIniciarSesion.js" charset="utf-8"></script>
+   <script type="text/javascript" src="scripts/login/logicaInterfazIniciarSesion.js"></script>
+</body>
+</html>
