@@ -1,16 +1,15 @@
+/*Botones*/
 var botonAgregar = document.querySelector("#btnAgregar");
 var botonRegistrar = document.querySelector("#btnRegistrar");
 var botonActualizar = document.querySelector("#btnActualizar");
 var titulo = document.querySelector("#titulo");
 var modal = document.querySelector(".remodal-overlay");
 
-
+/*Eventos de los botones*/
 botonRegistrar.addEventListener("click", registrarDatos);
 botonActualizar.addEventListener("click", actualizarDatos);
-
 botonAgregar.addEventListener("click", llamarModal);
 
-// Hacer filtro
 var table = document.querySelector("#tblProfesores").tBodies[0];
 
 if(table != null){
@@ -18,6 +17,8 @@ if(table != null){
 	busqueda.addEventListener('keyup', buscaTabla);
 }
 
+
+llenarTabla();
 llenarListaAcademias();
 
 function buscaTabla(){
@@ -32,35 +33,43 @@ function buscaTabla(){
   }
 }
 
-
-llenarTabla();
-
 function llamarModal() {
+	cambiarBotones("registrar", this.name);
+	eliminarMsjRequerido();
+	document.querySelector("#numId").disabled = false;  
 	window.location.href = "#modal";
-	titulo.innerHTML = "Registrar Profesor"
+	titulo.innerHTML = "Registrar profesor"
 	document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
 }
 
-function obtenerDatos() {
-	var form = document.querySelectorAll('form input:not([type="button"]), form select ');
-	var arrFormulario = [];
-	for (var i = 0; i < form.length; i++) {
-		arrFormulario[i] = form[i].value;
-	}
+function obtenerCampos() {
+	return document.querySelectorAll('form input:not([type="button"]), form select ');
+}
 
-	arrFormulario.push();
+function obtenerDatos() {
+	var campos = obtenerCampos();
+	var arrFormulario = [];
+	
+	for (var i = 0; i < campos.length; i++) {
+		if(campos[i].id === "txtAcademia")
+			arrFormulario[i] = campos[i][campos[i].selectedIndex].id
+		else
+			arrFormulario[i] = campos[i].value;
+	}
+	
 	return arrFormulario;
 }
 
 function validarDatos(arrDatos) {
-	var form = document.querySelectorAll('form input:not([type="button"]), form select ');
+	var form = obtenerCampos();
 	var span = document.querySelectorAll(".span-error");
-
 	var valido = true;
+
 	for (var i = 0; i < form.length; i++) {
 		if (form[i].classList[0]==="requerido") {
-			if(arrDatos[i]===""){
-				span[i].innerHTML =" Campo requerido";
+			
+			if(arrDatos[i] === ""){
+				span[i].innerHTML ="* Requerido";
 				valido = false;
 			}
 		}
@@ -68,59 +77,45 @@ function validarDatos(arrDatos) {
 	return valido;
 }
 
-/*Inicio: Función encargada de validar que no existan profesores con Id duplicados */
-function validarNumId () {
-	var spanID = document.querySelector(".span-error2");
-
-	var numId = document.querySelector('#numId').value;
-	var listaProfesores = obtenerListaProfesores();
-	var valido = true;
-
-	for (var i = 0; i < listaProfesores.length; i++) {
-		if (Number(listaProfesores[i][4]) === Number(numId)){
-			valido = false;
-			spanID.innerHTML = " Usuario ya existe.";
+function eliminarMsjRequerido() {
+	var form = obtenerCampos();
+	var span = document.querySelectorAll(".span-error");
+	
+	for (var i = 0; i < form.length; i++) {
+		if (form[i].classList[0]==="requerido") {
+				span[i].innerHTML ="*";
 		}
-	}
-
-	return valido;
+	}	
 }
-/*Fin: Función encargada de validar que no existan profesores con Id duplicados */
 
-
-/*Inicio: Función encargada de validar que no existan profesores con email duplicados */
+/*Función encargada de validar que no existan profesores con email duplicados */
 function validarEmail () {
 	var spanEmail = document.querySelector(".span-error3");
 
 	var email = document.querySelector('#emCorreoElect').value;
-	var listaProfesores = obtenerListaProfesores();
+	var listaCorreos = obtenerCorreos();
 	var valido = true;
 
-	for (var j = 0; j < listaProfesores.length; j++) {
-		if (String(listaProfesores[j][5]) === String(email)){
+	for (var j = 0; j < listaCorreos.length; j++) {
+		if (String(listaCorreos[j]["correo"]) === String(email)){
 			valido = false;
-			spanEmail.innerHTML = " Usuario ya existe.";
+			spanEmail.innerHTML = "* Ya registrado.";
 		}
 	}
-
+	
 	return valido;
 }
-/*Fin: Función encargada de validar que no existan profesores con email duplicados */
-
 
 function registrarDatos () {
-	var bActivo = true;
 	var arrDatos = obtenerDatos();
 
 	var edad = calcularEdad();
 
-	if(validarNumId() && validarEmail() && validarDatos(arrDatos)) {
+	if(validarEmail() && validarDatos(arrDatos)) {
 		arrDatos.push(edad);
-		arrDatos.push(bActivo);
 		document.querySelector(".remodal-overlay").style.display = "none";
-		agregarProfesor(arrDatos);
-		llenarTabla();
-		window.location.hash='';
+		agregarUsuario(arrDatos);
+		window.location.hash =' ';
 		limpiarFormulario();
 		llamarAlerta("success",
 			"Profesor registrado",
@@ -129,99 +124,86 @@ function registrarDatos () {
 	}
 }
 
-/*Inicio: Función para calcular la edad*/
+/* Función para calcular la edad*/
 function calcularEdad() {
-
-    var cumple = document.getElementById('datFechaNacimiento').value;
-    var cumpleanios = +new Date(cumple);
-    var edad = ((Date.now() - cumpleanios) / (31557600000));
-
-    edad = Math.trunc(edad);
-
-    return edad;
+    var hoy = new Date();
+    var fechaNacimiento = new Date(document.getElementById('datFechaNacimiento').value);
+    var age = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    var m = hoy.getMonth() - fechaNacimiento.getMonth();
+    
+    if (m < 0 || (m === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+        age--;
+    }
+    return age;
 }
-/*Fin: Función para calcular la edad*/
 
-/*Inicio: Función para crear una lista con las academias y enviarlas al select*/
-function llenarListaAcademias(){
-	var listaAcademias = document.querySelector("#txtAcademia");
-	var academias = obtenerAcademias();
-
-	for(var i = 0; i < academias.length; i++) {
-		var opt = academias[i][1];
-		var el = document.createElement("option");
-
-		el.textContent = opt;
-		el.value = opt;
-		el.id = lugares[i][0];
-		el.setAttribute("data-espacio", academias[i][5]);
-		listaAcademias.appendChild(el);
-	}
-}
-/*Fin: Función para crear una lista con las academias y enviarlas al select*/
-
-
-function actualizarDatos()
-{
-	var bActivo = true;
-	var arrDatos = obtenerDatos();
-	arrDatos.push(bActivo);
-	arrDatos.unshift(Number (botonActualizar.name));
-
-	modificarProfesor(arrDatos);
+function actualizarDatos(){
+	var arrDatos = obtenerDatos();	
+	arrDatos.push(this.name);
+	arrDatos.push(calcularEdad());
+	
+	modificarUsuario(arrDatos);
 	limpiarFormulario();
-	cambiarBotones("agregar");
+	cambiarBotones("agregar", this.name);
+	
 	window.location.hash='';
-	llenarTabla();
+	
 	llamarAlerta("success",
-		"Información del profesor actualizada",
+		"Información del organización actualizada",
 		"Los datos han sido actualizados satisfactoriamente"
 	);
-
 }
+
 function activarDesactivarBoton(){
 	var activo = this.value === "Activar" ? true : false;
-	var mensajeActivo="activado";
-	desactivarActivarProfesor(Number(this.name), activo);
-	if(activo){
+	var mensajeActivo = "activado";
+	
+	desactivarActivarProfesor(this, activo);
+	
+	if(activo)
 		mensajeActivo = "activado";
-	}
-	else{
-		mensajeActivo="desactivado";
-	}
-	llenarTabla();
+	
+	else
+		mensajeActivo = "desactivado";
+	
 	llamarAlerta("warning",
-		"Profesor "+ mensajeActivo,
-		"Los datos han sido "+ mensajeActivo+  "s satisfactoriamente"
+		"Profesor " + mensajeActivo,
+		"Los datos han sido " + mensajeActivo +  "s satisfactoriamente."
 	);
 }
-
 
 function llenarFormulario() {
 	cambiarBotones("actualizar", this.name);
-		document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
+	eliminarMsjRequerido();
+	document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
 	window.location.href = "#modal";
-	titulo.innerHTML = "Modificar Profesor"
+	titulo.innerHTML = "Modificar profesor"
 
+	var infoProfesor = obtenerProfesorPorId(this.name);
+	var infoAcademia = obtenerAcademiasPorProfesor(this.getAttribute("data-idProfesor"));
 
-	var infoProfesor = buscarProfesorCodigo(this.name);
+	var fecha = new Date(infoProfesor[0]["fechaNacimiento"]);
+	var dia = ("0" + fecha.getDate()).slice(-2);
+	var mes = ("0" + (fecha.getMonth() + 1)).slice(-2);
+	var fechaNacimiento = fecha.getFullYear() + "-" + mes +"-"+ dia;
 
-
-	document.querySelector("#txtNombreProf").value = infoProfesor[1];//cuando se traten de select poner 1
-	document.querySelector("#txt1Apellido").value = infoProfesor[2]
-	document.querySelector("#txt2Apellido").value = infoProfesor[3];
-	document.querySelector("#numId").value = infoProfesor[4];
-	document.querySelector("#emCorreoElect").value = infoProfesor[5];
-	document.querySelector("#txtTelefono").value = infoProfesor[6];
-	document.querySelector("#txtGenero").value = infoProfesor[7];
-	document.querySelector("#txtAcademia").value = infoProfesor[8];
-	document.querySelector("#datFechaNacimiento").value = infoProfesor[9];
+	document.querySelector("#txtNombreProf").value = infoProfesor[0]["nombre"];
+	document.querySelector("#txt1Apellido").value = infoProfesor[0]["primer_apellido"];
+	document.querySelector("#txt2Apellido").value = infoProfesor[0]["segundo_apellido"];
+	document.querySelector("#numId").value = infoProfesor[0]["identificacion"];
+	document.querySelector("#emCorreoElect").value = infoProfesor[0]["correo"];
+	document.querySelector("#txtTelefono").value = infoProfesor[0]["telefono"];
+	document.querySelector("#txtGenero").value = infoProfesor[0]["genero"];
+	document.querySelector("#txtAcademia").value = infoAcademia[0]["nombre"];
+	document.getElementById("datFechaNacimiento").value = fechaNacimiento;
+	document.querySelector("#numId").disabled = true;  
+	document.querySelector("#idProfesor").value = infoProfesor[0]["idProfesor"];
 }
 
 function cambiarBotones(btn, id) {
 	if(btn === "actualizar"){
 		botonActualizar.className = botonActualizar.className.replace("display-none", "display-block");
-		botonActualizar.name =id;//guardar el id
+		botonActualizar.name = id;//guardar el id
 		botonRegistrar.className = botonRegistrar.className.replace("display-block", "display-none");
 	}
 	else {
@@ -232,84 +214,102 @@ function cambiarBotones(btn, id) {
 
 function limpiarFormulario(){
 
-	document.querySelector("#txtNombreProf").value = "";//cuando se traten de select poner 1
+	document.querySelector("#txtNombreProf").value = "";
 	document.querySelector("#txt1Apellido").value = "";
 	document.querySelector("#txt2Apellido").value = "";
 	document.querySelector("#numId").value = "";
 	document.querySelector("#emCorreoElect").value = "";
 	document.querySelector("#txtGenero").value = "";
-	document.querySelector("#txtAcademia").value = "";
 	document.querySelector("#txtTelefono").value = "";
 	document.querySelector("#datFechaNacimiento").value = "";
-
 }
 
 function llenarTabla() {
 	var listaProfesores = obtenerListaProfesores();
 	var td, text, fila;
-
 	var tbody = document.querySelector("#tblProfesores tbody");
 
-	tbody.innerHTML ='';//limpia la tabla
+	tbody.innerHTML = "";
 
 	if(listaProfesores != null){
+				
 		for (var i = 0; i < listaProfesores.length; i++) {
+			var listaAcademias = obtenerAcademiasPorProfesor(listaProfesores[i]["idProfesor"]);
+			var academias = "";
 
-			fila = tbody.insertRow(i);//fila
+			fila = tbody.insertRow(i);
+			
+			var tdNombre = fila.insertCell(0);
+			tdNombre.classList = "center";
+			var nombre = listaProfesores[i]["nombre"] + " " + listaProfesores[i]["primer_apellido"] + " " + listaProfesores[i]["segundo_apellido"];
+			tdNombre.appendChild(document.createTextNode((nombre)));
 
-			td = fila.insertCell(0);
-			text = document.createTextNode(listaProfesores[i][1]);
-			td.appendChild(text);
+			var tdId = fila.insertCell(1);
+			tdId.classList = "center";
+			tdId.appendChild(document.createTextNode((listaProfesores[i]["identificacion"])));
 
-			td = fila.insertCell(1);
-			text = document.createTextNode(listaProfesores[i][2]);
-			td.appendChild(text);
+			var tdCorreo = fila.insertCell(2);
+			tdCorreo.classList = "center";
+			tdCorreo.appendChild(document.createTextNode((listaProfesores[i]["correo"])));
 
-			td = fila.insertCell(2);
-			text = document.createTextNode(listaProfesores[i][4]);
-			td.appendChild(text);
+			//Lista las academias de cada profesor
+			for (var x = 0; x <= listaAcademias.length-1 ; x++) {				
+				academias +=  listaAcademias[x]["nombre"] + " ";
+			}
 
-			td = fila.insertCell(3);
-			text = document.createTextNode(listaProfesores[i][5]);
-			td.appendChild(text);
+			academias = academias == "" ? "-" : academias;
+
+			var tdAcademia = fila.insertCell(3);
+			tdAcademia.classList = "center";
+			tdAcademia.appendChild(document.createTextNode(academias));
 
 
-			var td = fila.insertCell(4);
-			var btnEditar = document.createElement('button');
-			var btnActivar = document.createElement('button');
-			var activo = listaProfesores[i][listaProfesores[i].length-1] === false ? "Activar" : "Desactivar";
-			var claseOjo = listaProfesores[i][listaProfesores[i].length-1] === false ? "fa-eye" : "fa-eye-slash";
-
+			//Acciones
+			var td = fila.insertCell(listaProfesores[i].length);
+			var btnEditar = document.createElement("button");
+			var btnActivar = document.createElement("button");
+			var activo = listaProfesores[i]["estado"] === "false" ? "Activar" : "Desactivar";
+			var claseOjo = activo === "Activar" ? "fa-eye" : "fa-eye-slash";
+			
+			td.classList= "center";
+			
 			btnEditar.type = "button";
 			btnEditar.value = "Editar";
-			btnEditar.name =  listaProfesores[i][0];
-			btnEditar.classList="btn btnIcono fa fa-pencil";
-			//classList = Propiedad class del html
+			btnEditar.name =  listaProfesores[i]["idUsuario"];
+			btnEditar.classList ="btn btnIcono fa fa-pencil";
 			btnEditar.addEventListener("click", llenarFormulario);
+			btnEditar.setAttribute("data-idProfesor", listaProfesores[i]["idProfesor"]);
 
 			btnActivar.type = "button";
 			btnActivar.value = activo;
-			btnActivar.name = listaProfesores[i][0];
-			btnActivar.classList="btn btnIcono fa "+ claseOjo;
+			btnActivar.name = listaProfesores[i]["idUsuario"];
+			btnActivar.classList = "btn btnIcono fa "+ claseOjo;
 			btnActivar.addEventListener("click", activarDesactivarBoton);
 
 			td.appendChild(btnEditar);
 			td.appendChild(btnActivar);
 		}
 	}
+	
+	if(listaProfesores.length == 0){
+		document.querySelector("#msg_noOrganizacions").style.display = "";
+	}
+	else{
+		document.querySelector("#tblProfesores").style.display = "";
+	}
 }
 
 function llenarListaAcademias(){
 	var listaAcademias = document.querySelector("#txtAcademia");
 	var academias = obtenerAcademias();
-
+	
 	for(var i = 0; i < academias.length; i++) {
-		var opt = academias[i][1];
+		var opt = academias[i]["nombre"];
 		var el = document.createElement("option");
-
+		
 		el.textContent = opt;
 		el.value = opt;
-		el.id = academias[i][0];
+		el.id = academias[i]["idAcademia"];
 		listaAcademias.appendChild(el);
 	}
 }

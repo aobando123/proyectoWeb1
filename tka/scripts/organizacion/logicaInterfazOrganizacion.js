@@ -1,80 +1,116 @@
+/*Botones*/
 var botonAgregar = document.querySelector("#btnAgregar");
 var botonRegistrar = document.querySelector("#btnRegistrar");
 var botonActualizar = document.querySelector("#btnActualizar");
+
+/*Eventos de los botones*/
+botonRegistrar.addEventListener("click", registrarDatos);
+botonActualizar.addEventListener("click", actualizarDatos);
+botonAgregar.addEventListener("click", llamarModal);
+
+/*Opciones del modal*/
 var titulo = document.querySelector("#titulo");
 var modal = document.querySelector(".remodal-overlay");
 
-
-botonRegistrar.addEventListener("click", registrarDatos);
-botonActualizar.addEventListener("click", actualizarDatos);
-
-botonAgregar.addEventListener("click", llamarModal);
-
-// Hacer filtro
 var table = document.querySelector("#tblOrganizaciones").tBodies[0];
 
 if(table != null){
 	var busqueda = document.querySelector('#buscar');
+	
 	busqueda.addEventListener('keyup', buscaTabla);
 }
 
+llenarTabla();
+
 function buscaTabla(){
   texto = busqueda.value.toLowerCase();
-  var r=0;
+  var r = 0;
+  
   while(row = table.rows[r++])
   {
 	if ( row.innerText.toLowerCase().indexOf(texto) !== -1 )
-	  row.style.display = null;
+		row.style.display = null;
 	else
-	  row.style.display = 'none';
+	  row.style.display = "none";
   }
 }
 
-
-llenarTabla();
-
 function llamarModal() {
+	cambiarBotones("registrar", this.name);
+	eliminarMsjRequerido();
 	window.location.href = "#modal";
-	titulo.innerHTML = "Registrar Organizacion"
+	titulo.innerHTML = "Registrar organización"
 	document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
 }
 
-function obtenerDatos() {
-	var form = document.querySelectorAll('form input:not([type="button"]), form select ');
-	var arrFormulario = [];
+function eliminarMsjRequerido() {
+	var form = obtenerCampos();
+	var span = document.querySelectorAll(".span-error");
+	
 	for (var i = 0; i < form.length; i++) {
-		arrFormulario[i] = form[i].value;
+		if (form[i].classList[0]==="requerido") {
+				span[i].innerHTML ="*";
+		}
+	}	
+}
+
+function obtenerCampos() {
+	return document.querySelectorAll('form input:not([type="button"]), form select ');
+}
+
+function obtenerDatos() {
+	var campos = obtenerCampos();
+	var arrFormulario = [];
+	
+	for (var i = 0; i < campos.length; i++) {
+		arrFormulario[i] = campos[i].value;
 	}
+	
 	return arrFormulario;
 }
 
-function validarDatos(arrDatos) {
-	var form = document.querySelectorAll('form input:not([type="button"]), form select ');
-	var span = document.querySelectorAll(".span-error");
+function obtenerDatosOrganizacion(event){
+	var tr = event.closest("tr");
+	var datos = [];
+	
+	for(var x = 0; x < tr.childNodes.length; x++){
+		datos.push(tr.childNodes[x].innerText);
+	}
+	
+	return datos;
+}
 
+function validarDatos(arrCampos) {
+	var span = document.querySelectorAll(".span-error");
 	var valido = true;
-	for (var i = 0; i < form.length; i++) {
-		if (form[i].classList[0]==="requerido") {
-			if(arrDatos[i]===""){
+	
+	for (var i = 0; i < arrCampos.length; i++) {
+	
+		if (arrCampos[i].classList[0] === "requerido") {
+			if(arrCampos[i].value === ""){
 				span[i].innerHTML =" * Campo requerido";
 				valido = false;
 			}
 		}
 	}
+	
 	return valido;
 }
 
 function registrarDatos () {
 	var bActivo = true;
 	var arrDatos = obtenerDatos();
+	var arrCampos = obtenerCampos();
 
-	if(validarDatos(arrDatos) && validarCodOrg()){
+	if(validarDatos(arrCampos)){
 		arrDatos.push(bActivo);
 		document.querySelector(".remodal-overlay").style.display = "none";
 		agregarOrganizacion(arrDatos);
 		llenarTabla();
-		window.location.hash='';
+		window.location.hash = "";
+		
 		limpiarFormulario();
+		
 		llamarAlerta("success",
 			"Organización registrada",
 			"Los datos han sido registrados satisfactoriamente"
@@ -84,40 +120,41 @@ function registrarDatos () {
 
 function actualizarDatos()
 {
-	var bActivo = true;
-	var arrDatos = obtenerDatos();
-	arrDatos.push(bActivo);
-	arrDatos.unshift(Number (botonActualizar.name));
-
+	var arrDatos = obtenerDatos();	
+	arrDatos.push(this.name);
+	
 	modificarOrganizacion(arrDatos);
 	limpiarFormulario();
 	cambiarBotones("agregar");
+	
 	window.location.hash='';
+	
 	llenarTabla();
 	llamarAlerta("success",
 		"Información del organización actualizada",
 		"Los datos han sido actualizados satisfactoriamente"
 	);
-
 }
+
 function activarDesactivarBoton(){
 	var activo = this.value === "Activar" ? true : false;
-	var mensajeActivo="activado";
-	desactivarActivarOrg(Number(this.name), activo);
-	if(activo){
+	var mensajeActivo = "activado";
+	
+	desactivarActivarOrg(this, activo);
+	
+	if(activo)
 		mensajeActivo = "activada";
-	}
-	else{
-		mensajeActivo="desactivada";
-	}
-	llenarTabla();
+	
+	else
+		mensajeActivo = "desactivada";
+	
 	llamarAlerta("warning",
-		"Organización "+ mensajeActivo,
-		"Los datos han sido "+ mensajeActivo+  "s satisfactoriamente"
+		"Organización " + mensajeActivo,
+		"Los datos han sido " + mensajeActivo +  "s satisfactoriamente."
 	);
 }
 
-/*Inicio: Función para validar que no existan códigos de organizaciones duplicados*/
+/*Función para validar que no existan códigos de organizaciones duplicados*/
 
 function validarCodOrg() {
 	var spanID = document.querySelector(".span-error1");
@@ -129,30 +166,26 @@ function validarCodOrg() {
 	for (var i = 0; i < listaOrganizaciones.length; i++) {
 		if (Number(listaOrganizaciones[i][2]) === Number(cod)){
 			valido = false;
-			spanID.innerHTML = " Organización ya existe.";
+			spanID.innerHTML = "Esta organización ya existe.";
 		}
 	}
+	
 	return valido;
-
 }
 
-/*Fin: Función para validar que no existan códigos de organizaciones duplicados*/
-
 function llenarFormulario() {
+	eliminarMsjRequerido();
 	cambiarBotones("actualizar", this.name);
-		document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
+	document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
 	window.location.href = "#modal";
 	titulo.innerHTML = "Modificar organización"
 
+	var infoOrganizacion = obtenerDatosOrganizacion(this);
 
-	var infoOrganizacion =buscarOrganizacionCodigo(this.name);
-
-
-	document.querySelector("#txtNombreOrg").value = infoOrganizacion[1];//cuando se traten de select poner 1
-	document.querySelector("#numCodigo").value = infoOrganizacion[2]
-	document.querySelector("#txtTipoOrg").value = infoOrganizacion[3];
-	document.querySelector("#descOrg").value = infoOrganizacion[4];
-
+	document.querySelector("#txtNombreOrg").value = infoOrganizacion[0];
+	document.querySelector("#numCodigo").value = infoOrganizacion[1]
+	document.querySelector("#txtTipoOrg").value = infoOrganizacion[2];
+	document.querySelector("#descOrg").value = infoOrganizacion[3];
 }
 
 function cambiarBotones(btn, id) {
@@ -168,54 +201,65 @@ function cambiarBotones(btn, id) {
 }
 
 function limpiarFormulario(){
-	//Editable
-
-	document.querySelector("#txtNombreOrg").value = "";//cuando se traten de select poner 1
+	
+	document.querySelector("#txtNombreOrg").value = "";
 	document.querySelector("#numCodigo").value = "";
-	document.querySelector("#txtTipoOrg").value = "";
+	document.querySelector("#txtTipoOrg").value = 1;
 	document.querySelector("#descOrg").value = "";
 
 }
 
 function llenarTabla() {
-	var listaOrganizaciones = obtenerListaOrganizaciones();
+	var listaOrganizaciones = obtenerOrganizaciones();
 	var td, text, fila;
-
+	var campos = ["nombre","codigo", "tipo","descripcion"];
 	var tbody = document.querySelector("#tblOrganizaciones tbody");
 
-	tbody.innerHTML ='';//limpia la tabla
+	tbody.innerHTML = "";
 
 	if(listaOrganizaciones != null){
+				
 		for (var i = 0; i < listaOrganizaciones.length; i++) {
 
-			fila = tbody.insertRow(i);//fila
-			for (var columna = 1; columna < listaOrganizaciones[i].length -1; columna++) {
-				td = fila.insertCell(columna-1);
-				text = document.createTextNode(listaOrganizaciones[i][columna]);
+			fila = tbody.insertRow(i);
+			
+			for (var columna = 0; columna < Object.keys(listaOrganizaciones[i]).length -2 ; columna++) {
+				td = fila.insertCell();
+				td.classList= "center";
+				
+				text = document.createTextNode(listaOrganizaciones[i][campos[columna]]);
 				td.appendChild(text);
 			}
 
-			var td = fila.insertCell(listaOrganizaciones[i].length -2);
-			var btnEditar = document.createElement('button');
-			var btnActivar = document.createElement('button');
-			var activo = listaOrganizaciones[i][listaOrganizaciones[i].length-1] === false ? "Activar" : "Desactivar";
-			var claseOjo = listaOrganizaciones[i][listaOrganizaciones[i].length-1] === false ? "fa-eye" : "fa-eye-slash";
+			var td = fila.insertCell(listaOrganizaciones[i].length);
+			var btnEditar = document.createElement("button");
+			var btnActivar = document.createElement("button");
+			var activo = listaOrganizaciones[i]["estado"] === "false" ? "Activar" : "Desactivar";
+			var claseOjo = activo === "Activar" ? "fa-eye" : "fa-eye-slash";
+			
+			td.classList= "center";
 			
 			btnEditar.type = "button";
 			btnEditar.value = "Editar";
-			btnEditar.name =  listaOrganizaciones[i][0];
-			btnEditar.classList="btn btnIcono fa fa-pencil";
-			//classList = Propiedad class del html
+			btnEditar.name =  listaOrganizaciones[i]["idOrganizacion"];
+			btnEditar.classList ="btn btnIcono fa fa-pencil";
 			btnEditar.addEventListener("click", llenarFormulario);
 
 			btnActivar.type = "button";
 			btnActivar.value = activo;
-			btnActivar.name = listaOrganizaciones[i][0];
-			btnActivar.classList="btn btnIcono fa "+ claseOjo;
+			btnActivar.name = listaOrganizaciones[i]["idOrganizacion"];
+			btnActivar.classList = "btn btnIcono fa "+ claseOjo;
 			btnActivar.addEventListener("click", activarDesactivarBoton);
 
 			td.appendChild(btnEditar);
 			td.appendChild(btnActivar);
 		}
+	}
+	
+	if(listaOrganizaciones.length == 0){
+		document.querySelector("#msg_noOrganizacions").style.display = "";
+	}
+	else{
+		document.querySelector("#tblOrganizaciones").style.display = "";
 	}
 }

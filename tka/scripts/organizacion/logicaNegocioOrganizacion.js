@@ -1,69 +1,103 @@
+function obtenerOrganizaciones(){
+	var listaOrganizaciones = []
+	var request = $.ajax({
+		url: 'services/organizacion/listar_organizacion.php',
+    	dataType: 'json',
+    	async: false,
+    	method: 'get',
+	});
 
-function obtenerListaOrganizaciones() {
-	var listaOrganizaciones = JSON.parse(localStorage.getItem('listaOrganizacionesLS'));
-
-	if(listaOrganizaciones == null){
-		listaOrganizaciones = [];
-	}
+	request.done(function (datos) {
+		listaOrganizaciones = datos;
+	});
+	
+	request.fail(function(){
+		console.log('Error de conexión.');
+	});
 
 	return listaOrganizaciones;
 }
 
-function agregarOrganizacion(pOrganizacionNuevo) {
-	listaOrganizaciones = obtenerListaOrganizaciones();
-	idOrganizacion = devolverId('listaIdOrganizacionLS');
-	pOrganizacionNuevo.unshift(idOrganizacion);//pone de primer elemento al id
-	listaOrganizaciones.push(pOrganizacionNuevo)
-	localStorage.setItem('listaOrganizacionesLS', JSON.stringify(listaOrganizaciones));
-}
+function agregarOrganizacion(arrUsuario) {
+	var request = $.ajax({
+		url:'services/organizacion/registrar_organizacion.php',
+		dataType:'json',
+		async:false,
+		method:'Post',
+		data:{
+			'pnombre':arrUsuario[0],
+			'ptipo': arrUsuario[2],
+			'pdescripcion': arrUsuario[3],
+			'pcodigo': arrUsuario[1]
+		}
+	});
 
-function devolverId (listaId){
-	//Si no exite la lista de ID
-	if(localStorage.getItem(listaId) === null){
-		//Crear lista de Ids
-		var id = 1;
-		localStorage.setItem(listaId, JSON.stringify(id));
-	}
-	else{
-		var id = localStorage.getItem(listaId);
-		id++;
-		localStorage.setItem(listaId, JSON.stringify(id));
-	}
-
-	return id;
+	request.done(function () {
+		llenarTabla();
+	});
+	
+	request.fail(function() {
+		console.log("Error de conexion");
+	});
 }
 
 function buscarOrganizacionCodigo(iCodigo) {
-	var listaOrganizaciones = obtenerListaOrganizaciones();
+	var listaOrganizaciones = obtenerOrganizaciones();
 	var arrOrganizacionEncontrado = [];
+	
 	for (var i = 0; i < listaOrganizaciones.length; i++) {
-		if(listaOrganizaciones[i][0]== iCodigo){
+		if(listaOrganizaciones[i]["idOrganizacion"] == iCodigo){
 			arrOrganizacionEncontrado = listaOrganizaciones[i]
 		}
 	}
 	return arrOrganizacionEncontrado;
 }
 
-function modificarOrganizacion(OrganizacionModificado) {
-	var listaOrganizaciones = obtenerListaOrganizaciones();
-	for (var i = 0; i < listaOrganizaciones.length; i++) {
-		if(listaOrganizaciones[i][0]=== OrganizacionModificado[0]){
-			OrganizacionModificado[OrganizacionModificado.length-1]=listaOrganizaciones[i][listaOrganizaciones[i].length-1];
-			listaOrganizaciones[i] = OrganizacionModificado;
-		}
-	}
-
-	localStorage.setItem('listaOrganizacionesLS', JSON.stringify(listaOrganizaciones));
+function modificarOrganizacion(datos) {
+	var request = $.ajax({
+		url: 'services/organizacion/modificar_organizacion.php',
+    	dataType: 'json',
+    	async: false,
+    	method: 'post',
+    	data:{
+			'pnombre':datos[0],
+			'ptipo': datos[2],
+			'pdescripcion': datos[3],
+			'pcodigo': datos[1],
+			'pid_organizacion': datos[4],
+    	}
+	});
+	
+	request.done(function() {
+		llenarTabla();
+	});
+	
+	request.fail(function(event) {
+		console.log("Error de conexion" + event);
+	});
+ 
 }
 
-function desactivarActivarOrg(id, activado) {
-		var listaOrganizaciones = obtenerListaOrganizaciones();
-	for (var i = 0; i < listaOrganizaciones.length; i++) {
-		if(listaOrganizaciones[i][0]=== id){
-			listaOrganizaciones[i][listaOrganizaciones[i].length-1] = activado;
-		}
-	}
+function desactivarActivarOrg(organizacion, activado) {
+	var request = $.ajax({
+	url: 'services/organizacion/activar_desactivar_organizacion.php',
+    	dataType: 'json',
+    	async: false,
+    	method: 'post',
+    	data:{
+    		'pid_organizacion': Number(organizacion.name),
+    		'pestado': activado
+    	}
 
-	localStorage.setItem('listaOrganizacionesLS', JSON.stringify(listaOrganizaciones));
-
+	});
+	
+	request.done(function() {
+		var claseOjo = activado === false ? "fa-eye" : "fa-eye-slash";
+		organizacion.classList = "btn btnIcono fa "+ claseOjo;
+		organizacion.value = activado === false ? "Activar" : "Desactivar";
+	});
+	
+	request.fail(function() {
+		console.log("Error de conexion");
+	});
 }

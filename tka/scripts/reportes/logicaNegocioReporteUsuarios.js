@@ -1,39 +1,20 @@
-function obtenerListaUsuarios() {
-	var listaUsuarios = JSON.parse(localStorage.getItem('listaUsuariosLS'));
 
-	if(listaUsuarios == null){
-		listaUsuarios = [];
-	}
+function obtenerListaUsuarios(){
+	var listaProfesores = []
+	var request = $.ajax({
+		url: 'services/usuario/listar_usuario.php',
+    	dataType: 'json',
+    	async: false,
+    	method: 'get',
+	});
 
-	return listaUsuarios;
-}
-
-function obtenerListaProfesores() {
-	var listaProfesores = JSON.parse(localStorage.getItem('listaProfesoresLS'));
-
-	if(listaProfesores == null){
-		listaProfesores = [];
-	}
+	request.done(function (datos) {
+		listaProfesores = datos;
+	});
+	
+	request.fail(function(error){
+		console.log('Error de conexión.' + error);
+	});
 
 	return listaProfesores;
-}
-
-function obtenerListaEstudiantes() {
-	var listaEstudiantes = JSON.parse(localStorage.getItem('listaestudiantesLS'));
-
-	if(listaEstudiantes == null){
-		listaEstudiantes = [];
-	}
-
-	return listaEstudiantes;
-}
-
-function obtenerListaEventos() {
-	var listaEventos = JSON.parse(localStorage.getItem('listaEventos'));
-
-	if(listaEventos == null){
-		listaEventos = [];
-	}
-
-	return listaEventos;
 }
