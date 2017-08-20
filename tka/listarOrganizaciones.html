@@ -1,122 +1,125 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Organizaciones</title>
-<meta charset="utf-8">
-<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
-<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
-<link rel="stylesheet" href="publicmodal/src/jquery.remodal.css">
+	<title>Organizaciones</title>
+	<meta charset="utf-8">
+	<link href="styles/style.css" rel="stylesheet" type="text/css" media="all">
+	<link href="styles/normalize.css" rel="stylesheet" type="text/css" media="all">
+	<link rel="stylesheet" href="publicmodal/src/jquery.remodal.css">
 </head>
 <body>
-<div class="wrapper row0">
-  <div id="topbarsesion" class="clear">
-    <div class="fl_right">
-      <ul class="nospace">
-        <li id="nombreUsuario">Hola, </li>
-        <li id="cerrarSesion"><a href="index.html"><span class="fa fa-sign-out"></span>  Cerrar Sesión</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
-<div class="wrapper row1">
-  <header id="headersesion" class="clear">
-    <div id="logo" class="fl_left">
-      <h1><a href="index.html"><img src="images/logo.png"></a></h1>
-    </div>
-    <nav id="mainav" class="fl_right">
-    
-    </nav>
-  </header>
-</div>
+	<div class="wrapper row0">
+		<div id="topbarsesion" class="clear">
+			<div class="fl_right">
+				<ul class="nospace">
+					<li id="nombreUsuario">Hola, </li>
+					<li id="cerrarSesion"><a href="index.html"><span class="fa fa-sign-out"></span>  Cerrar Sesión</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="wrapper row1">
+		<header id="headersesion" class="clear">
+			<div id="logo" class="fl_left">
+				<h1><a href="index.html"><img src="images/logo.png"></a></h1>
+			</div>
+			
+			<nav id="mainav" class="fl_right"></nav>
+	  </header>
+	</div>
+	
 <!--ALERTA-->
-<div class="alert fade-out display-none">
-	<i class="fa fa-times"></i>
-	<div class="clear"></div>
-	<h3></h3>
-	<p></p>
-</div>
-<div class="wrapper">
-<main id="container" class="clear containerOrganizacion">
-  <div id="formulario">
-      <h2>Organizaciones</h2>
-      <button type="button" class="btn btnAgregar fa fa-plus" id="btnAgregar"></button>
-      <div class="clear"></div>
-      <table id="tblOrganizaciones" class="table table-striped">
-      <thead>
-        <tr>
-          <th class="titulos">Nombre</th>
-          <th class="titulos">Código</th>
-          <th class="titulos">Tipo</th>
-          <th class="titulos">Descripción</th>
-          <th class="titulos">Acciones</th>
-        </tr>
-        <tr>
-          <td colspan="5">
-            <input id="buscar" size="100%" type="text" class="form-control buscador" placeholder="¿Qué buscas?" />
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    </div>
-    </main>
-    </div>
-<footer class="wrapper row5">
-<div id="copyright" class="clear">
-<p class="fl_left">Copyright &copy; 2017 - Todos los derechos reservados</p>
-<p class="fl_right">Diseñado por DynamicS</p>
-</div>
-</footer>
+	<div class="alert fade-out display-none">
+		<i class="fa fa-times"></i>
+		<div class="clear"></div>
+		<h3></h3>
+		<p></p>
+	</div>
+	<div class="wrapper">
+		<main id="container" class="clear containerOrganizacion">
+			  <div id="formulario">
+				  <h2>Organizaciones</h2>
+				  <button type="button" class="btn btnAgregar fa fa-plus" id="btnAgregar"></button>
+				  <div class="clear"></div>
+				  <p id="msg_noOrganizacions" style="display:none">¡No se han encontrado organizaciones en el sistema!</p>
+				  <table id="tblOrganizaciones" class="table table-striped" style="display:none">
+					  <thead>
+							<tr>
+								<th class="titulos">Nombre</th>
+								<th class="titulos">Código</th>
+								<th class="titulos">Tipo</th>
+								<th class="titulos">Descripción</th>
+								<th class="titulos">Acciones</th>
+							</tr>
+							<tr>
+								<td colspan="5">
+									<input id="buscar" size="100%" type="text" class="form-control buscador" placeholder="¿Qué buscas?" />
+								</td>
+							</tr>
+					  </thead>
+				  <tbody>
+				  </tbody>
+				</table>
+			</div>
+		</main>
+	</div>
 
-<div class="remodal-bg">
-    <div class="remodal" data-remodal-id="modal">
+	<footer class="wrapper row5">
+		<div id="copyright" class="clear">
+			<p class="fl_left">Copyright &copy; 2017 - Todos los derechos reservados</p>
+			<p class="fl_right">Diseñado por DynamicS</p>
+		</div>
+	</footer>
 
-      <div class="wrapper">
-         <div id="formulario">
-             <h2 id="titulo">Registrar Organización</h2>
-             <form>
-               <div class="one_half first">
-                 <label for="txtNombreOrg">Nombre <span class="span-error">*</span></label>
-                <input type="text" name="Nombre de la organización" id="txtNombreOrg" class="requerido" value="" >
-               </div>
+	<div class="remodal-bg">
+		<div class="remodal" data-remodal-id="modal">
+			<div class="wrapper">
+				<div id="formulario">
+					<h2 id="titulo">Registrar Organización</h2>
+					<form>
+						<div class="block clear">
+							<label for="txtNombreOrg">Nombre <span class="span-error">*</span></label>
+							<input type="text" name="Nombre de la organización" id="txtNombreOrg" class="requerido" value="" >
+						</div>
 
-               <div class="one_half">
-                <label for="numCodigo">Código<span class="span-error span-error1">*</span></label>
-                <input type="number" name="Código" id="numCodigo" value="" >
-               </div>
+						<div class="one_half first">
+							<label for="numCodigo">Código<span class="span-error span-error1">*</span></label>
+							<input type="number" name="Código" id="numCodigo" class="requerido" value="" >
+						</div>
 
-               <div class="one_third first">
-                 <label for="txtTipoOrg">Tipo<span class="span-error"></span></label>
-                <select type="text" name="Tipo de organización" id="txtTipoOrg" class="requerido">
-                <option value="Caridad pública">Caridad pública</option>
-                <option value="fundacion">Fundación</option>
-                </select>
-               </div>
+						<div class="one_half">
+							<label for="txtTipoOrg">Tipo<span class="span-error"></span></label>
+							<select type="text" name="Tipo de organización" id="txtTipoOrg" class="requerido">
+								<option value="Caridad pública">Caridad pública</option>
+								<option value="Fundación">Fundación</option>
+							</select>
+						</div>
 
-               <div class="block clear">
-                 <label for="descOrg">Descripción de la organización<span class="span-error">*</span></label>
-                <input type="text" name="Descripción de la organización" id="descOrg" class="requerido" value="">
-               </div>
-               <div>
-                 <button type="button" name="button" id="btnRegistrar" class="btn btnRegistrar display-block">Registrar</button>
-                 <button type="button" name="button" id="btnActualizar" class="btn btnRegistrar display-none">Actualizar</button>
-               </div>
-             </form>
-           </div>
-       </div>
+					   <div class="block clear">
+							<label for="descOrg">Descripción<span class="span-error">*</span></label>
+							<input type="text" name="Descripción" id="descOrg" class="requerido" value="">
+					   </div>
+					   <div>
+							<button type="button" name="button" id="btnRegistrar" class="btn btnRegistrar display-block">Registrar</button>
+							<button type="button" name="button" id="btnActualizar" class="btn btnRegistrar display-none">Actualizar</button>
+						</div>
+					</form>
+			   </div>
+		   </div>
+		</div>
+	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	  
+	<script type="text/javascript" src="scripts/menu.js"></script>
+	<script type="text/javascript" src="scripts/sesion/session.js"></script>
+	<script type="text/javascript" src="scripts/alert.js"></script>
+	<script type="text/javascript" src="scripts/organizacion/logicaNegocioOrganizacion.js"></script>
+	<script type="text/javascript" src="scripts/organizacion/logicaInterfazOrganizacion.js"></script>
 
-    </div>
-</div>
-<script type="text/javascript" src="scripts/menu.js"></script>
-<script type="text/javascript" src="scripts/sesion/session.js"></script>
-<script type="text/javascript" src="scripts/alert.js"></script>
-<script type="text/javascript" src="scripts/organizacion/logicaNegocioOrganizacion.js"></script>
-<script type="text/javascript" src="scripts/organizacion/logicaInterfazOrganizacion.js"></script>
-
-<script>window.jQuery || document.write('<script src="publicmodal/js/jquery-2.1.0.min.js"><\/script>')</script>
-<script src="publicmodal/src/jquery.remodal.js"></script>
-
+	<script>window.jQuery || document.write('<script src="publicmodal/js/jquery-2.1.0.min.js"><\/script>')</script>
+	<script src="publicmodal/src/jquery.remodal.js"></script>
 
 </body>
 </html>

@@ -34,79 +34,59 @@
 			<main id="container" class="clear">
 				<div class="contenedortabs">
 					<div id="tabs" class="tab">
-						<button class="tablinks active btnActivo" onclick="mostrarDatosReporte(event, 'usuariosActivos', 'tablaUsuariosActivos', 'reporteUsuariosActivos')" id="defaultOpen">Usuarios activos</button>
-
-						<button class="tablinks" onclick="mostrarDatosReporte(event, 'usuariosInactivos', 'tablaUsuariosInactivos', 'reporteUsuariosInactivos')" id="">Usuario inactivos</button>
+						<button class="tablinks active btnActivo" onclick="mostrarDatosReporte(event, 'profesoresInactivos', 'tablaProfesoresInactivos', 'reporteProfesoresInactivos')" id="profInactivos">Usuarios inactivos</button>
+						
+						<button class="tablinks" onclick="mostrarDatosReporte(event, 'profesoresActivos', 'tablaProfesoresActivos', 'reporteProfesoresActivos')" id="profActivos">Usuarios activos</button>
 					</div>
-
-				<div id="usuariosActivos" class="tabcontent">
-					<h3>Usuarios Activos</h3>
-					<p id="msg_noUsuariosActivos" style="display:none">¡No se han encontrado usuarios activos!</p>
-					<div id="reporteUsuariosActivos" style="display:none">
-						<table id="tablaUsuariosActivos" class="table table-striped">
+			
+				<div id="profesoresInactivos" class="tabcontent">
+					<h3>Usuarios inactivos</h3>
+					<p id="msg_noProfesoresInactivos" style="display:none">¡No se han encontrado usuarios inactivos!</p>
+					<div id="reporteProfesoresInactivos" style="display:none">
+						<table id="tablaProfesoresInactivos" class="table table-striped">
 							<thead>
 								<tr>
-									<th class="titulos">Nombre</th>
+									<th class="titulos">Nombre </th>
+									<th class="titulos">Correo</th>
 									<th class="titulos">Rol</th>
-									<th class="titulos">Correo electrónico</th>
 								</tr>
 							</thead>
 							<tbody>
 							</tbody>
 						</table>
 
-						<button type="submit" name="submit" id="btnReporteUsuariosActivos" class="btn btnRegistrar display-block btnGenerarReporte">
+						<button type="submit" name="submit" id="btnReporteProfesoresInactivos" class="btn btnRegistrar display-block btnGenerarReporte">
 							Guardar reporte <i class="fa fa-file-pdf-o"></i>
 						</button>
 					</div>
 				</div>
-
-				<div id="usuariosInactivos" class="tabcontent" style="display:none">
-					<h3>Usuarios Inactivos</h3>
-					<p id="msg_noUsuariosInactivos" style="display:none">¡No se han encontrado usuarios inactivos!</p>
-					<div id="reporteUsuariosInactivos" style="display:none">
-						<table id="tablaUsuariosInactivos" class="table table-striped">
+			
+				<div id="profesoresActivos" class="tabcontent" style="display:none">
+					<h3>Usuarios activos</h3>
+					<p id="msg_noProfesoresActivos" style="display:none">¡No se han encontrado usuarios activos!</p>
+					<div id="reporteProfesoresActivos" style="display:none">
+						<table id="tablaProfesoresActivos" class="table table-striped">
 							<thead>
 								<tr>
 									<th class="titulos">Nombre</th>
+									<th class="titulos">Correo</th>
 									<th class="titulos">Rol</th>
-									<th class="titulos">Correo electrónico</th>
 								</tr>
 							</thead>
 							<tbody>
 							</tbody>
 						</table>
 
-						<button type="submit" name="submit" id="btnReporteUsuariosInactivos" class="btn btnRegistrar display-block btnGenerarReporte">
+						<button type="submit" name="submit" id="btnReporteProfesoresActivos" class="btn btnRegistrar display-block btnGenerarReporte">
 							Guardar reporte <i class="fa fa-file-pdf-o"></i>
 						</button>
 					</div>
 				</div>
-
-			<div id="usuariosInactivos" class="tabcontent" style="display:none">
-					<h3>Usuarios Inactivos</h3>
-					<p id="msg_noUsuariosInactivos" style="display:none">¡No se han encontrado usuarios inactivos!</p>
-					<div id="reporteUsuariosInactivos" style="display:none">
-					<table id="tablaUsuariosInactivos" class="table table-striped">
-						<thead>
-								<tr>
-									<th class="titulos">Nombre</th>
-										<th class="titulos">Rol</th>
-										<th class="titulos">Correo electrónico</th>
-										</tr>
-									</thead>
-								<tbody>
-									</tbody>
-							</table>
-
-										<button type="submit" name="submit" id="btnReporteUsuariosInactivos" class="btn btnRegistrar display-block btnGenerarReporte">
-											Guardar reporte <i class="fa fa-file-pdf-o"></i>
-										</button>
-									</div>
-								</div>
-				</div>
-			</main>
+			
+			
 		</div>
+	</main>
+</div>
 
 		<footer class="wrapper row5">
 			<div id="copyright" class="clear">
@@ -114,6 +94,9 @@
 				<p class="fl_right">Diseñado por DynamicS</p>
 			</div>
 		</footer>
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		
 		<script type="text/javascript" src="scripts/menu.js"></script>
 		<script type="text/javascript" src="scripts/sesion/session.js"></script>
 		<script src="scripts/reportes/logicaNegocioReporteUsuarios.js"></script>
