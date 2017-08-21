@@ -14,12 +14,7 @@ $result = $conexion->query($sentencia_sql);
 
 if(!$result)die("Falló la sentencia sql " . $conexion->error);
 
-
-
 $registro = mysqli_fetch_assoc($result);
-
-
-
 
 echo json_encode($registro);
 
