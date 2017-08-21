@@ -3,20 +3,22 @@ if (btnActualizar !== null){
 	btnActualizar.addEventListener("click", actualizarEvento);
 }
 
+
+
 llenarListaLugares();
 
 function llenarDatosDeEvento() {
 	var idEvento = obtenerId(); //obtiene el id del evento por medio del url
 	var evento = buscarEvento(idEvento);
 
-	document.querySelector("#nombreEvento").value = evento[1];
-	document.querySelector("#fechaInicialEvento").value = evento[2];
-	document.querySelector("#fechaFinalEvento").value = evento[3];
-	document.querySelector("#tipoEvento").value = evento[4];
-	document.querySelector("#costoInscripcion").value = evento[5];
-	document.querySelector("#costoEntrada").value = evento[6];
-	document.querySelector("#entradasDisponibles").value = evento[7];
-	document.querySelector("#lugarEvento").value = evento[8];
+	document.querySelector("#nombreEvento").value = evento['nombre'];
+	document.querySelector("#fechaInicialEvento").value = evento['fechaInicial'];
+	document.querySelector("#fechaFinalEvento").value = evento['fechaInicial'];
+	document.querySelector("#tipoEvento").value = evento['tipo'];
+	document.querySelector("#costoInscripcion").value = evento['costoInscripcion'];
+	document.querySelector("#costoEntrada").value = evento['costoEntrada'];
+	document.querySelector("#entradasDisponibles").value = evento['cantidadEntradas'];
+	document.querySelector("#lugarEvento").value = evento['Lugar_idLugar'];
 }
 
 function actualizarEvento()
@@ -25,9 +27,10 @@ function actualizarEvento()
 	var idEvento = obtenerId();
 	
 	listaEventos.unshift(Number(idEvento));
-	modificarEvento(listaEventos);
+
 	
-	if(validarEspacio()){
+	if(validarEspacio() && validar()){
+		modificarEvento(listaEventos);
 		llamarAlerta(
 			"success",
 			"Evento actualizado",
@@ -39,7 +42,21 @@ function actualizarEvento()
 	event.preventDefault();
     event.stopPropagation();
 }
-
+function validar(){
+	var listaEventos = obtenerDatosDeEvento();
+	var valid = true
+	for (var i = listaEventos.length - 1; i >= 0; i--) {
+		if(listaEventos[i] ===''){
+			valid = false;
+			llamarAlerta(
+			"error",
+			"Error en los datos",
+			"por favor llene todos los datos"
+		);
+		}
+	}
+	return valid;
+}
 function obtenerId(){
 	var url = new URL(window.location.href);
 	return url.searchParams.get("id");
@@ -48,17 +65,17 @@ function obtenerId(){
 function llenarListaLugares(){
 	var listaLugar = document.querySelector("#lugarEvento");
 	var lugares = obtenerLugares();
-	
 	for(var i = 0; i < lugares.length; i++) {
-		var opt = lugares[i][1];
+		var opt = lugares[i]["idLugar"];
 		var el = document.createElement("option");
-		
-		el.textContent = opt;
+
+		el.textContent = lugares[i]["nombre"];
 		el.value = opt;
-		el.id = lugares[i][0];
-		el.setAttribute("data-espacio", lugares[i][5]);
+		el.id = lugares[i]["capacidad"];
+
 		listaLugar.appendChild(el);
 	}
+
 }
 
 function validarEspacio(){    	
@@ -66,7 +83,7 @@ function validarEspacio(){
 	var entradasDisponibles = document.querySelector("#entradasDisponibles");  
 	
 	var cantidadEntradasDisponibles = Number(entradasDisponibles.value);
-	var capacidadLugar = Number(lugarEvento[lugarEvento.selectedIndex].getAttribute("data-espacio"));
+	var capacidadLugar = Number(lugarEvento[lugarEvento.selectedIndex].getAttribute("id"));
 	
 	if(cantidadEntradasDisponibles > capacidadLugar || cantidadEntradasDisponibles < 0 ){
 		llamarAlerta(

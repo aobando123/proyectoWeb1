@@ -1,10 +1,21 @@
 function obtenerlistaEventos() {
-	var listaEventos = JSON.parse(localStorage.getItem('listaEventos'));
+	var listaEventos = [];
 
-	if(listaEventos == null){
-		listaEventos = [];
-	}
-	  
+	var request = $.ajax({
+	url: 'services/evento/listar_evento.php',
+    type: 'get',
+    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-15',
+    dataType : 'json',
+    async:false,
+
+    success: function(respuesta){
+      	listaEventos = respuesta
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaLugares = [];
+    }
+	});
 	return listaEventos;
 }
 

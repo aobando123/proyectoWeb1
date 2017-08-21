@@ -1,21 +1,47 @@
 function obtenerPatrocinadores(){
-	var listaPatrocinadores = JSON.parse(localStorage.getItem('listaPatrocinadoresLS'));
-
-	if(listaPatrocinadores == null){
-		listaPatrocinadores = [];
-	}
+	var listaPatrocinadores = [];
+	var request = $.ajax({
+	url: 'services/evento/patrocinador/listar_patrocinador_sin_evento.php',
+    type: 'get',
+    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-15',
+    dataType : 'json',
+    async:false,
+    data:{
+      'pevento': obtenerId()
+    },
+    success: function(respuesta){
+      listaPatrocinadores = respuesta;
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaPatrocinadores = [];
+    }
+	});
 	  
 	return listaPatrocinadores;
 }
 	
 function obtenerPatrocinadorPorEvento(){
-	var listaPatrocinadorPorEvento = JSON.parse(localStorage.getItem('listaPatrocinadorPorEvento'));
-
-	if(listaPatrocinadorPorEvento == null){
-		listaPatrocinadorPorEvento = [];
-	}
+	var listaPatrocinadores = [];
+	var request = $.ajax({
+	url: 'services/evento/patrocinador/listar_patrocinadores_con_evento.php',
+    type: 'get',
+    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-15',
+    dataType : 'json',
+    async:false,
+    data:{
+      'pevento': obtenerId()
+    },
+    success: function(respuesta){
+      listaPatrocinadores = respuesta;
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaPatrocinadores = [];
+    }
+	});
 	  
-	return listaPatrocinadorPorEvento;
+	return listaPatrocinadores;
 }
 
 
@@ -29,54 +55,50 @@ function obtenerlistaCategorias() {
 	return listaCategorias;
 }
 
-function guardarPatrocinadorPorEvento(idEvento, idPatrocinador, idNombrePatrocinador){
-	var listaNueva = [idEvento];
-	listaNueva.push(idPatrocinador);
-	listaNueva.push(idNombrePatrocinador);
-	
-	var valido = true;
-	
-	var patrocinadoresPorEvento = obtenerPatrocinadorPorEvento();
-	
-	for (var i = 0; i < patrocinadoresPorEvento.length; i++) {
-		
-		if(patrocinadoresPorEvento[i][0] === idEvento && patrocinadoresPorEvento[i][1] === idPatrocinador){
-			valido = false;
-			continue;
-		}
-	}
-	
-	if(valido){
-		patrocinadoresPorEvento.push(listaNueva);
-		localStorage.setItem('listaPatrocinadorPorEvento', JSON.stringify(patrocinadoresPorEvento));
-		
-		llamarAlerta(
-			"success",
-			"Patrocinador agregado",
-			"Los datos han sido agregados satisfactoriamente"
-		);
-	}
-	else{
-		llamarAlerta(
-			"error",
-			"¡Lo Sentimos!",
-			"Esta patrocinador ya existe en el evento"
-		);
-	}
+function guardarPatrocinadorPorEvento(idEvento, idPatrocinador){
+	var request = $.ajax({
+		url:'services/evento/patrocinador/agregar_patrocinador_evento.php',
+		dataType:'json',
+		async:false,
+		method:'Post',
+		data:{
+			'pEvento':idEvento,
+			'pPatrocinador': idPatrocinador
+		},
+	success: function(respuesta){
+	event.preventDefault();
+	event.stopPropagation();
+      llamarAlerta('success','Patrocinador agregado','');
+      llenarListaPatrocinadores();
+      listarPatrocinadoresEvento();
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaPatrocinadores = [];
+    }
+	});
 }
 
 function eliminarPatrocinador(){
-	var categoria = Number(event.currentTarget.name);
- 
-	var listaCategorias = obtenerPatrocinadorPorEvento();
-
-    var editado = [];
-	for (var i = 0; i < listaCategorias.length; i++) {	
-		if(listaCategorias[i][1] != categoria){
-			editado.push(listaCategorias[i]);
-		}		
-	}
-	
-	localStorage.setItem('listaPatrocinadorPorEvento', JSON.stringify(editado));
-	listarPatrocinadoresEvento();
+	var request = $.ajax({
+		url:'services/evento/patrocinador/eliminar_patrocinador_evento.php',
+		dataType:'json',
+		async:false,
+		method:'Post',
+		data:{
+			'pEvento':obtenerId(),
+			'pPatrocinador': event.currentTarget.name
+		},
+	success: function(respuesta){
+	event.preventDefault();
+	event.stopPropagation();
+      llamarAlerta('warning','Patrocinador eliminado','');
+      llenarListaPatrocinadores();
+      listarPatrocinadoresEvento();
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaPatrocinadores = [];
+    }
+	});
 }

@@ -10,24 +10,21 @@ if(btnAgregarPatrocinador != null){
 function llenarListaPatrocinadores(){
 	var listaPatrocinadores = document.querySelector("#nombrePatrocinador");
 	var patrocinadores = obtenerPatrocinadores();
-	
+	listaPatrocinadores.innerHTML = '';
 	for(var i = 0; i < patrocinadores.length; i++) {
-		var opt = patrocinadores[i][1];
+		var opt = patrocinadores[i]["id_patrocinador"];
 		var el = document.createElement("option");
 		
-		el.textContent = opt;
+		el.textContent = patrocinadores[i]["nombre"];
 		el.value = opt;
-		el.id = patrocinadores[i][0];
 		listaPatrocinadores.appendChild(el);
 	}
 }
 
 function agregarPatrocinador(){
 	var idEvento = obtenerId();
-	var nombrePatrocinador = document.querySelector("#nombrePatrocinador");
-	var idPatrocinador = nombrePatrocinador[nombrePatrocinador.selectedIndex].getAttribute("id");	
-	var nombrePatrocinador = nombrePatrocinador.value;	
-	guardarPatrocinadorPorEvento(Number(idEvento), Number(idPatrocinador), nombrePatrocinador);
+	var idPatrocinador = document.querySelector("#nombrePatrocinador").value;
+	guardarPatrocinadorPorEvento(Number(idEvento), Number(idPatrocinador));
 	
 	event.preventDefault();
 	event.stopPropagation();
@@ -43,32 +40,28 @@ function listarPatrocinadoresEvento() {
 	tbody.innerHTML ="";
 	
 	if(listaPatrocinadoresPorEvento != []){
-		var numRow = 0;
+
 		
 		for (var i = 0; i < listaPatrocinadoresPorEvento.length; i++) {
 			
-			if(listaPatrocinadoresPorEvento[i][0] == obtenerId()){
 				document.querySelector("#tablaPatrocinadoresEvento").style.display = "";
-				fila = tbody.insertRow(numRow);
+				fila = tbody.insertRow(i);
+				td = fila.insertCell();
+				texto = document.createTextNode(listaPatrocinadoresPorEvento[i]["nombre"]);
+				td.appendChild(texto);
+
 				
-				for (var columna = 1; columna < listaPatrocinadoresPorEvento[i].length-1 ; columna++) {
-					
-						td = fila.insertCell(columna-1);
-						texto = document.createTextNode(listaPatrocinadoresPorEvento[i][columna+1]);
-						td.appendChild(texto);
-				}
-				
-				var td = fila.insertCell(listaPatrocinadoresPorEvento[i].length -2);
+				var td = fila.insertCell();
 				var btnEliminar = document.createElement('button');
 
 				btnEliminar.type = "button";
 				btnEliminar.value = "Eliminar";
-				btnEliminar.name =  listaPatrocinadoresPorEvento[i][1];
+				btnEliminar.name =  listaPatrocinadoresPorEvento[i]["id_patrocinador"];
 				btnEliminar.classList="btn btnDelete fa fa-trash";
 				btnEliminar.addEventListener("click", eliminarPatrocinador);
 
 				td.appendChild(btnEliminar);
-			}
+			
 		}
 	}
 }

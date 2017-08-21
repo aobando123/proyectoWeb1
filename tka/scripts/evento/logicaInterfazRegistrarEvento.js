@@ -1,3 +1,4 @@
+
 var botonRegistrar = document.querySelector("#btnRegistrar");
 
 if(botonRegistrar!=null){
@@ -5,6 +6,7 @@ if(botonRegistrar!=null){
 }
 
 llenarListaLugares();
+
 
 //Función para validar que los campos requeridos del formulario estén insertados
 function validarFormulario(event){
@@ -57,7 +59,7 @@ function validarEspacio(){
 	var entradasDisponibles = document.querySelector("#entradasDisponibles");  
 	
 	var cantidadEntradasDisponibles = Number(entradasDisponibles.value);
-	var capacidadLugar = Number(lugarEvento[lugarEvento.selectedIndex].getAttribute("data-espacio"));
+	var capacidadLugar = Number(lugarEvento[lugarEvento.selectedIndex].getAttribute("id"));
 	
 	if(cantidadEntradasDisponibles > capacidadLugar || cantidadEntradasDisponibles < 0 ){
 		llamarAlerta(
@@ -91,15 +93,11 @@ function registrarDatos (){
 	var bActivo = true;
 	var arrDatos = obtenerValores();
 
-	arrDatos.push(bActivo);
 	agregarItem(arrDatos);
 	
-	llamarAlerta("success",
-		"Evento actualizado",
-		"Los datos han sido actualizados satisfactoriamente"
-	);
+
 	
-	window.location.href = "modificarEvento.html?id=" + arrDatos[0];
+	window.location.href = "listarEvento.html";
 }
 
 function cambiarBotones(btn, id) {
@@ -116,16 +114,15 @@ function cambiarBotones(btn, id) {
 
 function llenarListaLugares(){
 	var listaLugar = document.querySelector("#lugarEvento");
-	var lugares = obtenerLugares();
-	
+	var lugares = llamarLugares();
 	for(var i = 0; i < lugares.length; i++) {
-		var opt = lugares[i][1];
+		var opt = lugares[i]["idLugar"];
 		var el = document.createElement("option");
-		
-		el.textContent = opt;
+
+		el.textContent = lugares[i]["nombre"];
 		el.value = opt;
-		el.id = lugares[i][0];
-		el.setAttribute("data-espacio", lugares[i][5]);
+		el.id = lugares[i]["capacidad"];
+
 		listaLugar.appendChild(el);
 	}
 }

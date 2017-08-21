@@ -108,40 +108,40 @@ function llenarTabla() {
 
 			fila = tbody.insertRow(i);//fila
 			// se necesitan datos: 2,5,4,7
-			td = fila.insertCell(0);
-			text = document.createTextNode(listaEventos[i][1]);
+			td = fila.insertCell();
+			text = document.createTextNode(listaEventos[i]["nombre"]);
 			td.appendChild(text);
 			
-			td = fila.insertCell(1);
-			text = document.createTextNode(listaEventos[i][4]);
+			td = fila.insertCell();
+			text = document.createTextNode(listaEventos[i]["tipo"]);
 			td.appendChild(text);
 			
-			td = fila.insertCell(2);
-			var fecha = listaEventos[i][2] + "/" + listaEventos[i][3];
+			td = fila.insertCell();
+			var fecha = listaEventos[i]["fechaInicial"] + "/" + listaEventos[i]["fechaFinal"];
 			text = document.createTextNode(fecha);
 			td.appendChild(text);
 			
-			td = fila.insertCell(3);
-			text = document.createTextNode(listaEventos[i][8]);
+			td = fila.insertCell();
+			text = document.createTextNode(listaEventos[i]["nombreLugar"]);
 			td.appendChild(text);
 			
 			
 			/*CODIGO PARA AGREGAR BOTONES */
-			var td = fila.insertCell(4);
+			var td = fila.insertCell();
 			
 			var btnEditar = document.createElement('button');
 			var btnActivar = document.createElement('button');
-			var activo = listaEventos[i][listaEventos[i].length-1] === true;
+			var activo = listaEventos[i]['estado'] === 'activo';
 
 			
 			btnEditar.value = "Editar";
-			btnEditar.name =  listaEventos[i][0];
+			btnEditar.name =  listaEventos[i]["idEvento"];
 			btnEditar.classList = "btnEditar btn btnIcono fa fa-pencil";
 			btnEditar.addEventListener("click", editarEvento);
 			td.appendChild(btnEditar);
 			
 			btnActivar.value = !activo ? "Inactivo" : "Activo";
-			btnActivar.name = listaEventos[i][0];
+			btnActivar.name = listaEventos[i]["idEvento"];
 			btnActivar.classList = !activo ? "btn btnIcono fa fa-eye" : "btn btnIcono fa fa-eye-slash";
 			btnActivar.addEventListener("click", activarDesactivarBoton);
 

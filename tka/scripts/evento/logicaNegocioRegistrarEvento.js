@@ -8,22 +8,39 @@ function obtenerlistaEventos() {
 	return listaEventos;
 }
 
-function obtenerLugares(){
-	var listaLugares = JSON.parse(localStorage.getItem('listaLugaresLS'));
 
-	if(listaLugares == null){
-		listaLugares = [];
-	}
-	  
-	return listaLugares;
-}
 
 function agregarItem(pItemNuevo) {
-	listaEventos = obtenerlistaEventos();
-	idItem = devolverId('listaIdEventos');
-	pItemNuevo.unshift(idItem);//pone de primer elemento al id
-	listaEventos.push(pItemNuevo)
-	localStorage.setItem('listaEventos', JSON.stringify(listaEventos));
+	var request = $.ajax({
+	url: 'services/evento/registrar_evento.php',
+    type: 'post',
+    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-15',
+    dataType : 'json',
+    async:false,
+    data:{
+    	'pnombre':pItemNuevo[0],
+    	'pfechaIni':pItemNuevo[1],
+    	'pfechaFin':pItemNuevo[2],
+    	'ptipo':pItemNuevo[3],
+    	'pcostoInscrpcion': pItemNuevo[4],
+    	'pcostoEn': pItemNuevo[5],
+    	'pEntradas':pItemNuevo[6],
+    	'pLugar': pItemNuevo[7],
+
+    },
+
+    success: function(respuesta){
+      llamarAlerta("success",
+		"Evento registrado",
+		"Los datos han sido actualizados satisfactoriamente"
+	);
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+
+    }
+	});
+
 }
 
 function devolverId (listaId){
@@ -78,4 +95,25 @@ function desactivarActivarItem(id, activar) {
 	}
 
 	localStorage.setItem('listaEventos', JSON.stringify(listaEventos));
+}
+function  llamarLugares() {
+	var listaLugares;
+	var request = $.ajax({
+	url: 'services/evento/lista_lugares_evento.php',
+    type: 'get',
+    contentType: 'application/x-www-form-urlencoded;charset=ISO-8859-15',
+    dataType : 'json',
+    async:false,
+
+    success: function(respuesta){
+      	listaLugares =respuesta;
+    },
+    error: function(respuesta,error){
+      console.log(respuesta + 'error: ' + error);
+      listaLugares = [];
+    }
+	});
+
+	return listaLugares;
+
 }
