@@ -18,17 +18,61 @@ var botonRegistrar = document.querySelector("#btnRegistrar");
 var botonActualizar = document.querySelector("#btnActualizar");
 var titulo = document.querySelector("#titulo");
 var modal = document.querySelector(".remodal-overlay");
+
+var desactivarDomingo = document.querySelector(".day .desactivardomingo");
+var desactivarLunes = document.querySelector(".day .desactivarlunes");
+var desactivarMartes = document.querySelector(".day .desactivarmartes");
+var desactivarMiercoles = document.querySelector(".day .desactivarmiercoles");
+var desactivarJueves = document.querySelector(".day .desactivarjueves");
+var desactivarViernes = document.querySelector(".day .desactivarviernes");
+var desactivarSabado = document.querySelector(".day .desactivarsabado");
+
 var longitud;
 var latitud;
 var bounds;
 var mapa;
 var marker;
 
-llenarHorario();
+//llenarHorario();
 botonRegistrar.addEventListener("click", registrarDatos);
 botonActualizar.addEventListener("click", actualizarDatos);
 
 botonAgregar.addEventListener("click", llamarModal);
+
+desactivarDomingo.addEventListener("click", desactivarDia);
+desactivarDomingo.dia = "domingo";
+
+desactivarLunes.addEventListener("click", desactivarDia);
+desactivarLunes.dia = "lunes";
+
+desactivarMartes.addEventListener("click", desactivarDia);
+desactivarMartes.dia = "martes";
+
+desactivarMiercoles.addEventListener("click", desactivarDia);
+desactivarMiercoles.dia = "miercoles";
+
+desactivarJueves.addEventListener("click", desactivarDia);
+desactivarJueves.dia = "jueves";
+
+desactivarViernes.addEventListener("click", desactivarDia);
+desactivarViernes.dia = "viernes";
+
+desactivarSabado.addEventListener("click", desactivarDia);
+desactivarSabado.dia = "sabado";
+
+//desactivarDía
+function desactivarDia(pdia) {
+	var dia = pdia.target.dia;
+	
+	if(document.querySelector(".desactivar"+dia).checked){
+		document.getElementById(dia+"Open").disabled = true;
+		document.getElementById(dia+"Close").disabled = true;
+		}else{
+			document.getElementById(dia+"Open").disabled = false;
+			document.getElementById(dia+"Close").disabled = false;
+			}
+}
+
 
 // Hacer filtro
 var table = document.querySelector("#tblLugares").tBodies[0];
@@ -53,7 +97,7 @@ function buscaTabla(){
 function initMap(){
 	 mapa = new google.maps.Map(document.getElementById('map'), {
            center: {lat: 9.953207, lng: -84.127891},
-           scrollwheel: false,
+           scrollwheel: true,
            zoom: 12
          });
 				var ltlg = mapa.getCenter();
@@ -71,86 +115,16 @@ function initMap(){
 			   });
 }
 function placeMarkerAndPanTo(latLng, mapa, marker, reset) {
-	latitud =marker.getPosition().lat();
-	longitud = marker.getPosition().lng();
 	marker.setPosition(latLng);
-  mapa.panTo(latLng);
+    mapa.panTo(latLng);
+	
 	if(reset){
 			mapa.setZoom(12);
 	}
+	latitud = marker.getPosition().lat();
+	longitud = marker.getPosition().lng();
 }
 
-
-
-
-
-function llenarHorario() {
-	var dias = document.querySelectorAll(".day")
-	for (var i = 0; i < dias.length; i++) {
-		var day = dias[i].id;
-		dias[i].innerHTML +='<div id="label">' + day + ': </div>';
-		dias[i].innerHTML += '<select id="' + day + 'FromH" class="select hour from"></select>';
-		dias[i].innerHTML+='<select id="' + day + 'FromM" class="select min from"></select>';
-		dias[i].innerHTML+='<select id="' + day + 'FromAP" class= "select ampm from"></select>';
-		dias[i].innerHTML+=' a <select id="' + day + 'ToH" class="select hour to"></select>';
-		dias[i].innerHTML+='<select id="' + day + 'ToM" class="select min to"></select>';
-		dias[i].innerHTML+='<select id="' + day + 'ToAP" class="select ampm to"></select>';
-		dias[i].innerHTML+='<input type="checkbox" name="closed" class="closed"><span>Cerrado</span>';
-	}
-	llenarSelect();
-
-
-}
-function disableDay() {
-		var padre = this.parentNode.childNodes;
-		for (var i = padre.length - 1; i >= 0; i--) {
-			if(padre[i].classList && padre[i].classList[0]==="select"){
-				if(this.checked){
-					padre[i].disabled = true;
-				}
-				else{
-					padre[i].disabled = false;
-				}
-			}
-		}
-
-
-}
-function llenarSelect(){
-	var horas = document.querySelectorAll(".hour");
-	var min = document.querySelectorAll(".min");
-	var m = ["00","15","30","45"];
-	var ampm = document.querySelectorAll(".ampm");
-	var close = document.querySelectorAll(".day .closed");
-
-	//HORAS
-	for (var i = 0; i < horas.length; i++) {
-	 	for (var h = 0; h < 13; h++) {
-	 		horas[i].innerHTML +='<option value="' + h + '">' + h + '</option>';
-	 	}
-	 	horas[i].value="7";
-	}
-	//MINUTOS
-	for (var i = 0; i < min.length; i++) {
-		for (var j = 0; j < m.length; j++) {
-			min[i].innerHTML+='<option value="' + m[j] + '">' + m[j] + '</option>'
-		}
-	}
-
-	//AM PM
-	for (var i = 0; i < ampm.length; i++) {
-		ampm[i].innerHTML+='<option value="AM">AM</option>';
-		ampm[i].innerHTML+='<option value="PM">PM</option>';
-		if(ampm[i].classList[2]==="to"){
-			ampm[i].value='PM'		}
-
-	}
-	//Desactivar
-	for (var i = close.length - 1; i >= 0; i--) {
-		close[i].addEventListener("click", disableDay);
-	}
-
-}
 
 llenarTabla();
 
@@ -163,63 +137,15 @@ function llamarModal() {
 }
 
 function obtenerDatos() {
-	var form = document.querySelectorAll('form input:not([type="checkbox"]), form select ');
+	var form = document.querySelectorAll('form input:not([type="checkbox"])');
 	var arrFormulario = [];
-	var contFormulario =0;
-	var horario=[];
-	var arrhorario=[];
-	var contdias=0;
-	var dias=["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado"]
-	var cont =0;
 	for (var i = 0; i < form.length; i++) {
-
-		if(form[i].classList[0]==="select" && !(form[i].parentNode.children[7].checked)){
-				if(cont===0){
-					horario[cont]= form[i].parentNode.children[0].innerText;
-					contdias++;
-					cont++;
-				}
-
-				horario[cont] = form[i].value;
-				if (cont===1 || cont===6) {
-					cont++
-					horario[cont]=":";
-
-				}else if(cont===4){
-					cont++
-					horario[cont]=" a "
-				}
-				cont++;
-				if(cont===10){
-
-					horario[cont]="\n";
-					arrhorario.push(horario);
-					horario=[];
-					cont=0;
-				}
-
-		}
-		else{
-			if(contFormulario===4){
-					arrFormulario[contFormulario] = arrhorario;
-					contFormulario++;
-					if(form[i].id === "numLongitud"){
-						arrFormulario[contFormulario] = form[i].value||0;
-					contFormulario++;
-					}
-
-			}
-			else if(form[i].disabled===false && form[i]!==null){
-				arrFormulario[contFormulario] = form[i].value || 0;
-				contFormulario++;
-			}
-
-
-		}
-
+		arrFormulario[i] = form[i].value || 0;
 	}
-	arrFormulario[contFormulario] = latitud;
-	arrFormulario[contFormulario+1] = longitud;
+	
+	arrFormulario[i] = latitud;
+	arrFormulario[i+1] = longitud;
+	
 	return arrFormulario;
 }
 
@@ -244,7 +170,7 @@ function validarDatos(arrDatos) {
 }
 
 function registrarDatos () {
-	var bActivo = true;
+	var bActivo = "activo";
 	var arrDatos = obtenerDatos();
 
 	if(validarDatos(arrDatos)){
@@ -263,12 +189,11 @@ function registrarDatos () {
 
 function actualizarDatos()
 {
-	var bActivo = true;
 	var arrDatos = obtenerDatos();
-	arrDatos.push(bActivo);
 	arrDatos.unshift(Number (botonActualizar.name));
 
 	modificarLugar(arrDatos);
+	
 	limpiarFormulario();
 	cambiarBotones("agregar");
 	window.location.hash='';
@@ -289,11 +214,9 @@ function activarDesactivarBoton(){
 	else{
 		mensajeActivo="desactivado";
 	}
-	llenarTabla();
 	llamarAlerta("warning",
-		"Lugar "+ mensajeActivo,
-		"Los datos han sido "+ mensajeActivo+  "s satisfactoriamente"
-	);
+	"Lugar "+ mensajeActivo,
+	"Los datos han sido "+ mensajeActivo+  "s satisfactoriamente");
 }
 
 
@@ -301,78 +224,81 @@ function activarDesactivarBoton(){
 
 function llenarFormulario() {
 	cambiarBotones("actualizar", this.name);
-		document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
+	document.querySelector(".remodal-close").addEventListener("click", limpiarFormulario);
 	window.location.href = "#modal";
 	titulo.innerHTML = "Modificar lugar"
 
 
-	var infoLugar =buscarLugarCodigo(this.name);
-	var horarioLugar = infoLugar[5];
-	var contHorarioLugar = infoLugar[5].length-1;
-	 var latlng = new google.maps.LatLng(infoLugar[6], infoLugar[7]);
-	 placeMarkerAndPanTo(latlng,mapa,marker,false)
-	document.querySelector("#txtLugar").value = infoLugar[1];//cuando se traten de select poner 1
-	document.querySelector("#txtDireccion").value = infoLugar[2]
-	document.querySelector("#txtTelefono").value = infoLugar[3];
-	document.querySelector("#numCapacidad").value = infoLugar[4];
-
-
-
-	var horario = document.querySelectorAll("#hourForm .day");
-	var close = document.querySelectorAll(".day .closed");
-	var cont = 0
-	var pm = true;
-	//horario
-	for (var i = horario.length - 1; i >= 0; i--) {
-		var select = horario[i].childNodes
-		var dia = horarioLugar[contHorarioLugar][0] + " ";
-		for (var j = select.length - 1; j >= 0; j--) {
-			if(select[j].classList && select[j].classList[0]==="select" && select[0].innerText === dia ){
-				switch(cont){
-					case 0:
-						if(pm){
-							select[j].value=horarioLugar[contHorarioLugar][9];
-						}
-						else{
-							select[j].value=horarioLugar[contHorarioLugar][4];
-						}
-						cont++
-						break;
-					case 1:
-						if(pm){
-							select[j].value=horarioLugar[contHorarioLugar][8];
-						}
-						else{
-							select[j].value=horarioLugar[contHorarioLugar][3];
-						}
-						cont++
-						break;
-					case 2:
-					if (pm) {
-						select[j].value=horarioLugar[contHorarioLugar][6];
-						pm=false;
-					}
-					else{
-						select[j].value=horarioLugar[contHorarioLugar][1];
-						pm=true;
-					}
-
-						cont=0;
-						break;
-				}
-				select[j].disabled=false;
-			} else if(select[j].classList && select[j].classList[0]==="select"){
-				select[j].disabled=true
+	var infoLugar = buscarLugarCodigo(this.name);
+	
+	/*new google.maps.LatLng(infoLugar['latitud'], infoLugar['longitud']);*/
+	var latlng = new google.maps.LatLng(infoLugar['latitud'], infoLugar['longitud']);
+	placeMarkerAndPanTo(latlng,mapa,marker,false)
+	
+	document.querySelector("#txtLugar").value = infoLugar['nombre'];//cuando se traten de select poner 1
+	document.querySelector("#txtDireccion").value = infoLugar['ubicacion']
+	document.querySelector("#txtTelefono").value = infoLugar['telefono'];
+	document.querySelector("#numCapacidad").value = infoLugar['capacidad'];
+	
+	var infoHorario = obtenerHorarioLugares(this.name);
+	
+	
+	for(var k = 0; k<7; k++){
+		
+		switch(k){
+			case 0:
+			var dia = "domingo";
+			break;
+			case 1:
+			var dia = "lunes";
+			break;
+			case 2:
+			var dia = "martes";
+			break;
+			case 3:
+			var dia = "miercoles";
+			break;
+			case 4:
+			var dia = "jueves";
+			break;
+			case 5:
+			var dia = "viernes";
+			break;
+			case 6:
+			var dia = "sabado";
+			break;
 			}
+			
+			for (var m = 1; m < 3; m++) {
+				
+						switch(m) {
+						case 1:
+						var dato = "inicio";
+						document.querySelector("#"+dia+"Open").value = infoHorario[k][dato];
+						break;
+						case 2:
+						var dato = "cierre";
+						document.querySelector("#"+dia+"Close").value = infoHorario[k][dato];
+						break;
+						default:
+						}
+						
+						if(infoHorario[k][dato] == "cerrado"){
+							document.querySelector(".desactivar"+dia).checked = true;
+							}
+						
+						if(document.querySelector(".desactivar"+dia).checked){
+						document.getElementById(dia+"Open").disabled = true;
+						document.getElementById(dia+"Close").disabled = true;
+						}else{
+						document.getElementById(dia+"Open").disabled = false;
+						document.getElementById(dia+"Close").disabled = false;
+						}
+						
+						}
+			
 		}
-		if(select[0].innerHTML === dia && contHorarioLugar>=0){
-			close[i].checked=false;
-			contHorarioLugar--;
-		}else{
-			close[i].checked=true;
-		}
-	}
-
+		
 }
 
 function cambiarBotones(btn, id) {
@@ -394,52 +320,53 @@ function limpiarFormulario(){
 	document.querySelector("#txtTelefono").value = "";
 	document.querySelector("#numCapacidad").value = "";
 	placeMarkerAndPanTo(bounds, mapa, marker, true);
-	var horario = document.querySelectorAll("#hourForm .day");
-	var close = document.querySelectorAll(".day .closed");
-	var cont = 0
-	var pm = true;
-	//horario
-	for (var i = horario.length - 1; i >= 0; i--) {
-		var select = horario[i].childNodes
-		for (var j = select.length - 1; j >= 0; j--) {
-			if(select[j].classList && select[j].classList[0]==="select"){
-				switch(cont){
-					case 0:
-						if(pm){
-							select[j].value="PM";
-							pm = false;
-						}
-						else{
-							select[j].value="AM";
-							pm=true;
-						}
-						cont++
-						break;
-					case 1:
-						select[j].value="00"
-						cont++
-						break;
-					case 2:
-						select[j].value="7";
-						cont=0;
-						break;
-				}
-			}
-			select[j].disabled=false;
-		}
-
-	}
+	
+	
 	//checkboxs
 		for (var i = close.length - 1; i >= 0; i--) {
 		close[i].checked=false;
 	}
+	//
+	for(var k = 0; k<7; k++){
+		
+		switch(k){
+			case 0:
+			var dia = "domingo";
+			break;
+			case 1:
+			var dia = "lunes";
+			break;
+			case 2:
+			var dia = "martes";
+			break;
+			case 3:
+			var dia = "miercoles";
+			break;
+			case 4:
+			var dia = "jueves";
+			break;
+			case 5:
+			var dia = "viernes";
+			break;
+			case 6:
+			var dia = "sabado";
+			break;
+			}
+			
+			document.querySelector("#"+dia+"Open").value = "";
+			document.querySelector("#"+dia+"Close").value = "";
+			document.querySelector(".desactivar"+dia).checked = false;
+			document.getElementById(dia+"Open").disabled = false;
+			document.getElementById(dia+"Close").disabled = false;
+	}
+	//
 }
 
 function llenarTabla() {
-	var listaLugares = obtenerListaLugares();
+	var listaLugares = obtenerLugares();
 	var td, text, fila;
 	var info="";
-
+	var campos = ["nombre","ubicacion","telefono","capacidad"]
 	var tbody = document.querySelector("#tblLugares tbody");
 
 	tbody.innerHTML ='';//limpia la tabla
@@ -448,10 +375,15 @@ function llenarTabla() {
 		for (var i = 0; i < listaLugares.length ; i++) {
 
 			fila = tbody.insertRow(i);//fila
-
-			for (var columna = 1; columna < listaLugares[i].length -3 ; columna++) {
-				td = fila.insertCell(columna-1);
-				if(columna===5){
+			
+			for (var columna = 0; columna < Object.keys(listaLugares[i]).length -3 ; columna++) {
+					td = fila.insertCell();
+					td.classList= "center";
+				if(columna === 4){
+					
+					idLugar = listaLugares[i]['idLugar'];
+					var listaHorario = obtenerHorarioLugares(idLugar);
+					
 					var btnHorario = document.createElement('button');
 					var horarioDiv = document.createElement('div');
 					btnHorario.classList = "btn btnRegistrar centericon"
@@ -459,41 +391,91 @@ function llenarTabla() {
 					btnHorario.addEventListener("click", mostrarHorario);
 					btnHorario.name = "oculto";
 					btnHorario.innerHTML = 'Horario <i class="fa fa-caret-down" aria-hidden="true"></i>';
-					var dias = listaLugares[i][5];
+					
+					var dias = listaHorario;
 					for (var k = 0; k < dias.length; k++) {
-						for (var m = 0; m < dias[k].length; m++) {
-							info += dias[k][m];
+						
+						switch(k) {
+						case 0:
+						var dia = "Domingo";	
+						break;
+						case 1:
+						var dia = "Lunes";
+						break;
+						case 2:
+						var dia = "Martes";
+						break;
+						case 3:
+						var dia = "Miercoles";
+						break;
+						case 4:
+						var dia = "Jueves";
+						break;
+						case 5:
+						var dia = "Viernes";
+						break;
+						case 6:
+						var dia = "Sabado";
+						break;
+						default:
 						}
-						horarioDiv.innerHTML += '<p>'+info+'</p>';
+						
+						for (var m = 0; m < 3; m++) {
+						switch(m) {
+						case 0:
+						var dato = "dia_id_dia";	
+						break;
+						case 1:
+						var dato = "inicio";
+						break;
+						case 2:
+						var dato = "cierre";
+						break;
+						default:
+						}
+							if(m == 0){
+								info += dia+'<br>';
+								}else{
+									
+									if(m == 1 && dias[k][dato] == "cerrado"){
+										info += dias[k][dato]+' ';
+										}else if(m == 2 && dias[k][dato] == "cerrado"){
+											break;
+											}else{
+												info += dias[k][dato]+' ';
+												}
+									
+									}
+						}
+						horarioDiv.innerHTML += info+'<br><br>';
 						info='';
 					}
-
+					
 					td.appendChild(btnHorario);
 					td.appendChild(horarioDiv);
-				}
-				else{
 
-				text = document.createTextNode(listaLugares[i][columna]);
-				td.appendChild(text);
+				} else{
+					text = document.createTextNode(listaLugares[i][campos[columna]]);
+					td.appendChild(text);
 				}
 
 			}
 
 
-			var td = fila.insertCell(listaLugares[i].length -4);
+			var td = fila.insertCell(listaLugares[i].length);
 			var btnEditar = document.createElement('button');
 			var btnActivar = document.createElement('button');
-			var activo = listaLugares[i][listaLugares[i].length-1] === false ? "Activar" : "Desactivar";
-			var claseOjo = listaLugares[i][listaLugares[i].length-1] === false ? "fa-eye" : "fa-eye-slash";
+			var activo = listaLugares[i]['estado'] === "desactivo" ? "Activar" : "Desactivar";
+			var claseOjo = listaLugares[i]['estado'] === "desactivo" ? "fa-eye" : "fa-eye-slash";
 			btnEditar.type = "button";
 			btnEditar.value = "Editar";
-			btnEditar.name =  listaLugares[i][0];
+			btnEditar.name =  listaLugares[i]['idLugar'];
 			btnEditar.classList="btn btnIcono fa fa-pencil";
 			btnEditar.addEventListener("click", llenarFormulario);
 
 			btnActivar.type = "button";
 			btnActivar.value = activo;
-			btnActivar.name = listaLugares[i][0];
+			btnActivar.name = listaLugares[i]['idLugar'];
 			btnActivar.classList="btn btnIcono fa "+ claseOjo;
 			btnActivar.addEventListener("click", activarDesactivarBoton);
 
@@ -501,7 +483,8 @@ function llenarTabla() {
 			td.appendChild(btnActivar);
 		}
 	}
-}
+	}
+	
 function mostrarHorario(){
 	if(this.name === "oculto"){
 		this.parentNode.children[1].classList = "display-block";
