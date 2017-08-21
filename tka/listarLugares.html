@@ -37,7 +37,7 @@
 </div>
 <div class="wrapper">
 
-<input type="time" name="">
+<!-- <input type="time" name=""> -->
 <main id="container" class="clear containerLugar">
   <div id="formulario">
       <h2>Lugares</h2>
@@ -87,24 +87,61 @@
                  <label for="txtDireccion">Dirección <span class="span-error">*</span></label>
                  <input type="text" id="txtDireccion" class="requerido" value="">
                </div>
-               <div class="one_third first">
-                 <label for="txtTelefono">Telefono<span class="span-error">*</span></label>
+               <div class="two_quarter first">
+                 <label for="txtTelefono">Telefono <span class="span-error">*</span></label>
                  <input type="text" id="txtTelefono" class="requerido" value="">
                </div>
-              <div class="one_third">
-                 <label for="numCapacidad">Capacidad<span class="span-error">*</span></label>
+              <div class="two_quarter">
+                 <label for="numCapacidad">Capacidad <span class="span-error">*</span></label>
                  <input type="number" id="numCapacidad" class="requerido" value="">
                </div>
                <div class="block clear">
                  <label for="txtHorario">Horario <span class="span-error">*</span></label>
                 <div id="hourForm">
-                    <div id="Domingo" class="day"></div>
-                    <div id="Lunes" class="day"></div>
-                    <div id="Martes" class="day"></div>
-                    <div id="Miercoles" class="day"></div>
-                    <div id="Jueves" class="day"></div>
-                    <div id="Viernes" class="day"></div>
-                    <div id="Sábado" class="day"></div>
+                    <!--Domingo-->
+                    <div id="Domingo" class="day">
+                    <div id="label">Domingo</div>
+                    <input type="time" id="domingoOpen" class="horario"> a <input type="time" id="domingoClose" class="horario"> 
+                    <input type="checkbox" name="desactivardomingo" class="desactivardomingo"><span>Cerrado</span>
+                    </div>
+                    <!--Lunes-->
+                    <div id="Lunes" class="day">
+                    <div id="label">Lunes</div>
+                    <input type="time" id="lunesOpen" class="horario"> a <input type="time" id="lunesClose" class="horario"> 
+                    <input type="checkbox" name="desactivarLunes" class="desactivarlunes"><span>Cerrado</span>
+                    </div>
+                    <!--Martes-->
+                    <div id="Martes" class="day">
+                    <div id="label">Martes</div>
+                    <input type="time" id="martesOpen" class="horario"> a <input type="time" id="martesClose" class="horario"> 
+                    <input type="checkbox" name="desactivarMartes" class="desactivarmartes"><span>Cerrado</span>
+                    </div>
+                    <!--Miercoles-->
+                    <div id="Miercoles" class="day">
+                    <div id="label">Mi&eacute;rcoles</div>
+                    <input type="time" id="miercolesOpen" class="horario"> a <input type="time" id="miercolesClose" class="horario"> 
+                    <input type="checkbox" name="desactivarMiercoles" class="desactivarmiercoles"><span>Cerrado</span>
+                    </div>
+                    <!--Jueves-->
+                    <div id="Jueves" class="day">
+                    <div id="label">Jueves</div>
+                    <input type="time" id="juevesOpen" class="horario"> a <input type="time" id="juevesClose" class="horario"> 
+                    <input type="checkbox" name="desactivarJueves" class="desactivarjueves"><span>Cerrado</span>
+                    </div>
+                    <!--Viernes-->
+                    <div id="Viernes" class="day">
+                    <div id="label">Viernes</div>
+                    <input type="time" id="viernesOpen" class="horario"> a <input type="time" id="viernesClose" class="horario"> 
+                    <input type="checkbox" name="desactivarViernes" class="desactivarviernes"><span>Cerrado</span>
+                    </div>
+                    <!--Sabado-->
+                    <div id="Sabado" class="day">
+                    <div id="label">Sabado</div>
+                    <input type="time" id="sabadoOpen" class="horario"> a <input type="time" id="sabadoClose" class="horario"> 
+                    <input type="checkbox" name="desactivarSabado" class="desactivarsabado"><span>Cerrado</span>
+                    </div>
+                    <!-- -->
+                    
                 </div>
                </div>
 
@@ -123,17 +160,23 @@
 
     </div>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzVABs3yt65nixJ50dA92x2CRV2m2tRKg&callback=initMap"
-   async defer></script>
+<!-- <script>window.jQuery || document.write('<script src="publicmodal/js/jquery-2.1.0.min.js"><\/script>')</script> -->
+<!-- <script src="publicmodal/js/jquery-2.1.0.min.js"></script> -->
+
+<script
+src="scripts/jquery-3.2.1.min.js"
+integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+crossorigin="anonymous"></script>
+  
+<script src="publicmodal/src/jquery.remodal.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzVABs3yt65nixJ50dA92x2CRV2m2tRKg&callback=initMap" async defer></script>
 <script type="text/javascript" src="scripts/menu.js"></script>
 <script type="text/javascript" src="scripts/sesion/session.js"></script>
 
 <script type="text/javascript" src="scripts/alert.js"></script>
 <script type="text/javascript" src="scripts/lugar/logicaNegocioLugar.js"></script>
 <script type="text/javascript" src="scripts/lugar/logicaInterfazLugar.js"></script>
-
-<script>window.jQuery || document.write('<script src="publicmodal/js/jquery-2.1.0.min.js"><\/script>')</script>
-<script src="publicmodal/src/jquery.remodal.js"></script>
 
 
 
